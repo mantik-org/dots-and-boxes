@@ -9,7 +9,10 @@ init:
 	pip3 install -r requirements.txt
 
 run-server:
-	python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)
+	@python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)
 
 run-agent:
-	python3 $(RMTDIR)/dotsandboxesagent.py $(PORT)
+	@python3 $(RMTDIR)/dotsandboxesagent.py $(PORT)
+
+run:
+	@python3 -m src
