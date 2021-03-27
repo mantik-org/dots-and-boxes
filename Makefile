@@ -1,7 +1,7 @@
 .PHONY: all init clean
 
 PORT 	?= 8080
-RMTDIR 	?= $(PWD)/lib/third-party/remote
+RMTDIR 	?= $(PWD)/third-party/remote
 
 all: init
 
