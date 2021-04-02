@@ -1,11 +1,11 @@
 from lib.embasp.languages.predicate import Predicate
-
+from lib.embasp.languages.asp.symbolic_constant import SymbolicConstant
 
 class Step(Predicate):
     predicate_name = "step"
 
     def __init__(self, row=None, column=None, orientation=None):
-        Predicate.__init__(self, ["row", "column", "orientation"])
+        Predicate.__init__(self, [("row", int), ("column", int), ("orientation", SymbolicConstant)])
         self.row = row
         self.column = column
         self.orientation = orientation
