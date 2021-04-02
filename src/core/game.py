@@ -4,6 +4,7 @@ import websockets
 import json
 import sys
 
+from time import sleep
 from .game_match import GameMatch
 
 logger = logging.getLogger('debug')
@@ -14,8 +15,6 @@ class Game:
 
     def __init__(self):
         self.matches = {}
-        self.websocket = None
-
 
     @staticmethod
     def getInstance():
@@ -26,8 +25,6 @@ class Game:
 
     @staticmethod
     async def on_network_data(websocket, path):
-
-        Game.getInstance().websocket = websocket
 
         try:          
             async for data in websocket:
@@ -41,7 +38,7 @@ class Game:
                     return False
 
                 if data['type'] == 'start':
-                    Game.getInstance().init_match(data['game'], data['player'], data['grid'])
+                    Game.getInstance().init_match(data['game'], data['player'], data['grid'], websocket)
                 
                 elif data['type'] == 'action':
                     Game.getInstance().update_match(data['game'], data['player'], data['location'], data['orientation'], data['nextplayer'], data['score'])
@@ -56,7 +53,7 @@ class Game:
             logger.error('[NETWORK] Exception {}'.format(e))
 
 
-    def init_match(self, identifier, player, grid):
+    def init_match(self, identifier, player, grid, socket):
 
 
         if not identifier in self.matches:
@@ -64,7 +61,7 @@ class Game:
             self.matches[identifier] = GameMatch(identifier, grid)
 
 
-        self.matches[identifier].add_player(player)
+        self.matches[identifier].add_player(player, socket)
         
         if player == 1:
             self.matches[identifier].play(self, 1)
@@ -87,14 +84,16 @@ class Game:
         if nextplayer is not None:
             self.matches[match].play(self, nextplayer)
 
-        if remote and self.websocket is not None:
+        if remote:
             asyncio.get_event_loop().create_task(
-                self.websocket.send(json.dumps({
+                self.matches[match].players[player].socket.send(json.dumps({
                     'type'          : 'action',
                     'location'      : location,
                     'orientation'   : str(orientation)
                 }))
             )
+
+            sleep(0.1)
 
 
     def run(self, host, port):

@@ -17,10 +17,11 @@ SOURCE = 'src/asp/agent.asp'
 
 class PlayerAgent:
 
-    def __init__(self, id=None, match=None):
+    def __init__(self, id=None, socket=None, match=None):
 
         self.id = id
         self.match = match
+        self.socket = socket
 
         logger.info('[ASP] Reading source code from {}'.format(SOURCE))
 

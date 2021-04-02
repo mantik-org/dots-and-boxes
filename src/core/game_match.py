@@ -28,11 +28,11 @@ class GameMatch:
             self.board.append(col)
 
 
-    def add_player(self, identifier):
+    def add_player(self, identifier, socket):
 
         if not identifier in self.players:
             logger.info('[GAME] Registered new player {} in match <{}>'.format(identifier, self.identifier))
-            self.players[identifier] = PlayerAgent(identifier, self)
+            self.players[identifier] = PlayerAgent(identifier, socket, self)
   
 
 
