@@ -40,7 +40,7 @@ class Game:
                     Game.getInstance().init_match(data['game'], data['player'], data['grid'])
                 
                 elif data['type'] == 'action':
-                    pass
+                    Game.getInstance().update_match(data['game'], data['player'], data['nextplayer'], data['score'], data['location'], data['orientation'])
 
                 elif data['type'] == 'end':
                     pass
@@ -59,9 +59,25 @@ class Game:
             logger.info("[GAME] Starting new match ({}) with grid {}".format(identifier, grid))
             self.matches[identifier] = GameMatch(identifier, grid)
 
+
         self.matches[identifier].add_player(player)
-        self.matches[identifier].play(1)
+        
+        if player == 1:
+            self.matches[identifier].play(1)
             
+
+    def update_match(self, match, player, nextplayer, score, location, orientation):
+        
+        if not match in self.matches:
+            logger.error('[GAME] Match not found: <{}>'.format(match))
+            return
+
+        logger.info('[GAME] Update board at {}:{} from {} / score: {}, nextplayer: {}'.format(location, orientation, player, score, nextplayer))
+
+        rows, cols = location
+        self.matches[match].score = score
+        self.matches[match].board[rows][cols][orientation] = player
+        self.matches[match].play(nextplayer)
 
 
     def run(self, host, port):
