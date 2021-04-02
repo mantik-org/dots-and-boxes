@@ -4,18 +4,16 @@ import websockets
 import json
 import sys
 
-from ..ai.remote import on_start
-from ..ai.remote import on_action
-from ..ai.remote import on_end
+from .game_match import GameMatch
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('debug')
 
 class Game:
 
     __instance__ = None
 
     def __init__(self):
-        self.matches = []
+        self.matches = {}
 
 
     @staticmethod
@@ -38,26 +36,35 @@ class Game:
                     logger.error(e)
                     return False
 
-            if data['type'] == 'start':
-                on_start(Game.getInstance(), data)
-            
-            elif data['type'] == 'action':
-                on_action(Game.getInstance(), data)
+                if data['type'] == 'start':
+                    Game.getInstance().init_match(data['game'], data['player'], data['grid'])
+                
+                elif data['type'] == 'action':
+                    pass
 
-            elif data['type'] == 'end':
-                on_end(Game.getInstance(), data)
+                elif data['type'] == 'end':
+                    pass
 
-            else:
-                logger.info('[WEBSOCK] Received invalid type {}'.format(data['type']))
+                else:
+                    logger.info('[WEBSOCK] Received invalid type {}'.format(data['type']))
 
         except:
             pass
 
 
-    def run(self, host, port):
+    def init_match(self, identifier, player, grid):
 
-        logger.setLevel(logging.DEBUG)
-        logger.addHandler(logging.StreamHandler(sys.stderr))
+
+        if not identifier in self.matches:
+            logger.info("[GAME] Starting new match ({}) with grid {}".format(identifier, grid))
+            self.matches[identifier] = GameMatch(identifier, grid)
+
+        self.matches[identifier].add_player(player)
+        self.matches[identifier].play(1)
+            
+
+
+    def run(self, host, port):
 
         logger.info('[GAME] Running...')
 
