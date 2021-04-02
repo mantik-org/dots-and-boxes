@@ -4,9 +4,9 @@ import websockets
 import json
 import sys
 
-from ..ai.agent import on_start
-from ..ai.agent import on_action
-from ..ai.agent import on_end
+from ..ai.remote import on_start
+from ..ai.remote import on_action
+from ..ai.remote import on_end
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ class Game:
     __instance__ = None
 
     def __init__(self):
-        self.agents = []
+        self.matches = []
 
 
     @staticmethod
@@ -57,7 +57,7 @@ class Game:
     def run(self, host, port):
 
         logger.setLevel(logging.DEBUG)
-        logger.addHandler(logging.StreamHandler(sys.stdout))
+        logger.addHandler(logging.StreamHandler(sys.stderr))
 
         logger.info('[GAME] Running...')
 

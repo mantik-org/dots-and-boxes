@@ -1,12 +1,12 @@
 
 
-class GameAgent:
+class GameMatch:
 
-    def __init__(self, id, grid, timelimit):
+    def __init__(self, identifier, grid, timelimit):
 
         rows, cols = grid
 
-        self.ids = { id }
+        self.ids = { identifier }
         self.rows = rows
         self.cols = cols
         self.board = []
