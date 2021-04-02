@@ -1,8 +1,8 @@
 from lib.embasp.languages.predicate import Predicate
 
 
-class In(Predicate):
-    predicate_name = "in"
+class Step(Predicate):
+    predicate_name = "step"
 
     def __init__(self, row=None, column=None, orientation=None):
         Predicate.__init__(self, ["row", "column", "orientation"])
@@ -29,4 +29,4 @@ class In(Predicate):
         self.orientation = orientation
 
     def __str__(self):
-        return In.predicate_name + "(" + str(self.row) + "," + str(self.column) + "," + str(self.orientation) + ")."
+        return Step.predicate_name + "(" + str(self.row) + "," + str(self.column) + "," + str(self.orientation) + ")."
