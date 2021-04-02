@@ -6,7 +6,8 @@ RMTDIR 	?= $(PWD)/lib/remote
 all: init
 
 init:
-	pip3 install -r requirements.txt
+	chmod +x lib/executable/dlv2linux
+	@pip3 install -r requirements.txt
 
 run-server:
 	@python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)

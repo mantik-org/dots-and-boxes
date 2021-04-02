@@ -10,7 +10,7 @@ def main():
     logger.setLevel(logging.DEBUG)
     logger.addHandler(logging.StreamHandler(sys.stderr))
     
-    Game.getInstance().run('localhost', 8081)
+    Game.getInstance().run('localhost', 8089)
 
 if __name__ == '__main__':
     main()

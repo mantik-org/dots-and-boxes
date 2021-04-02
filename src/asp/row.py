@@ -2,10 +2,10 @@ from lib.embasp.languages.predicate import Predicate
 
 
 class Row(Predicate):
-    predicate_name = "Row"
+    predicate_name = "rows"
 
     def __init__(self, index=None):
-        Predicate.__init__(self, ["index"])
+        Predicate.__init__(self, [("index", int)])
         self.index = index
 
     def get_index(self):
