@@ -2,6 +2,7 @@ from ...asp.drawn import Drawn
 from ...asp.row import Row
 from ...asp.column import Column
 from ...asp.step import Step
+from ...asp.phase import Phase
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -36,6 +37,7 @@ class PlayerAgent:
             ASPMapper.get_instance().register_class(Row)
             ASPMapper.get_instance().register_class(Column)
             ASPMapper.get_instance().register_class(Step)
+            ASPMapper.get_instance().register_class(Phase)
 
         except Exception as e:
             print(str(e))
@@ -92,6 +94,8 @@ class PlayerAgent:
                 for obj in answer_set.get_atoms():
                     if isinstance(obj, Step):
                         sol.append(obj)
+                    if isinstance(obj, Phase):
+                        logger.info('[ASP] Phase {}'.format(obj.get_phase()))
 
             self.handler.remove_program_from_id(program_id)
 
