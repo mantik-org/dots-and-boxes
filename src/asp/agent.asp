@@ -45,17 +45,17 @@ valence(I, J, Q) :- square(I, J), A = #count { I, J, D : drawn(I, J, D)     },
 
 
 % Chains
-chain(I, J) | not_chain(I, J) :- square(I, J).
+%chain(I, J) | not_chain(I, J) :- square(I, J).
 
-chain_path(I, J, M, N) :- valence(I, J, 2), valence(M, N, 2), in_square(R, C, D, I, J), in_square(R, C, D, M, N), not drawn(R, C, D).
-chain_path(I, J, M, N) :- chain_path(M, N, I, J).
+%chain_path(I, J, M, N) :- valence(I, J, 2), valence(M, N, 2), in_square(R, C, D, I, J), in_square(R, C, D, M, N), not drawn(R, C, D).
+%chain_path(I, J, M, N) :- chain_path(M, N, I, J).
 
-chained(I, J, M, N) :- chain_path(I, J, M, N).
-chained(I, J, M, N) :- chained(I, J, Z1, Z2), chain_path(Z1, Z2, M, N).
+%chained(I, J, M, N) :- chain_path(I, J, M, N).
+%chained(I, J, M, N) :- chained(I, J, Z1, Z2), chain_path(Z1, Z2, M, N).
 
-:- chain(I, J), chain(M, N), not chained(I, J, M, N).
-:- chain(I, J), not_chain(M, N), chain_path(I, J, M, N).
-:~ not #count { I, J : chain(I, J) } > 1. [ 1@9000 ]
+%:- chain(I, J), chain(M, N), not chained(I, J, M, N).
+%:- chain(I, J), not_chain(M, N), chain_path(I, J, M, N).
+%:~ not #count { I, J : chain(I, J) } > 1. [ 1@9000 ]
 
 
 % Game phases
@@ -78,6 +78,28 @@ adj_square(I, J, M, N) :- square(I, J), square(M, N), I = M - 1, J = N.
 adj_square(I, J, M, N) :- square(I, J), square(M, N), I = M, J = N + 1.
 adj_square(I, J, M, N) :- square(I, J), square(M, N), I = M, J = N - 1.
 
+% adj_grid(LINE, LINE): Check if two LINE are adjacent or that LINE_A and LINE_B share at least one dots.
+adj_grid(I1, J1, v, I2, J2, v) :- grid(I1, J1, v), grid(I2, J2, v), I1 = I2 - 1, J1 = J2.
+adj_grid(I1, J1, v, I2, J2, v) :- grid(I1, J1, v), grid(I2, J2, v), I1 = I2 + 1, J1 = J2.
+adj_grid(I1, J1, h, I2, J2, h) :- grid(I1, J1, h), grid(I2, J2, h), I1 = I2, J1 = J2 - 1.
+adj_grid(I1, J1, h, I2, J2, h) :- grid(I1, J1, h), grid(I2, J2, h), I1 = I2, J1 = J2 + 1.
+
+adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2, J1 = J2.
+adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2, J1 = J2 + 1.
+adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2 - 1, J1 = J2.
+adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2 - 1, J1 = J2 + 1.
+
+adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2, J1 = J2.
+adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2, J1 = J2 - 1.
+adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2.
+adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
+
+
+
+
+
+
+
 
 
 %
@@ -97,9 +119,16 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 % 4. Optimize
 %   - Phase 1.
 %       1. Do not create a box with a valence of 1.
-:~ phase(1), step(I, J, D), valence(M, N, 1), in_square(I, J, D, M, N). [ 1@1, I, J, D ]
+:~ phase(1), step(I, J, D), valence(M, N, 2), in_square(I, J, D, M, N). [ 1@2, I, J, D ]
 %       2. Try to be the first player to enter the second phase.
-:~ phase(1), chain(I, J). [ 1@2, I, J ]
-:~ phase(1), step(I, J, D), not chain(M, N), in_square(I, J, D, M, N). [ 1@3, I, J, D ]
+:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2). [ 1@1, I1, J1, D1 ]
 
+
+
+
+%:~ phase(1), chain(I, J). [ 1@2, I, J ]
+%:~ phase(1), step(I, J, D), not chain(M, N), in_square(I, J, D, M, N). [ 1@3, I, J, D ]
+
+
+% Phase 1/2
 :~ not_step(I, J, D), valence(M, N, 1), in_square(I, J, D, M, N). [ 1@5, I, J, D ]

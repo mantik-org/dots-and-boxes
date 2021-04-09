@@ -72,6 +72,7 @@ try:
     inputProgram.add_objects_input(getEdges())
 
     handler.add_program(inputProgram)
+    handler.add_option('-n0')
 
     answerSets = handler.start_sync()
 
