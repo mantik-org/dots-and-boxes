@@ -12,6 +12,7 @@ from lib.embasp.languages.asp.symbolic_constant import SymbolicConstant
 
 import logging
 import traceback
+import platform
 
 logger = logging.getLogger('debug')
 SOURCE = 'src/asp/agent.asp'
@@ -32,7 +33,15 @@ class PlayerAgent:
 
         try:
 
-            self.handler = DesktopHandler(DLV2DesktopService('lib/executable/dlv2linux'))
+            if platform.system() == 'Linux':
+                self.handler = DesktopHandler(DLV2DesktopService('lib/executable/dlv2linux'))
+            elif platform.system() == 'Windows':
+                self.handler = DesktopHandler(DLV2DesktopService('lib/executable/dlv2win'))
+            elif platform.system() == 'Darwin':
+                self.handler = DesktopHandler(DLV2DesktopService('lib/executable/dlv2.mac_7'))
+            else:
+                raise Exception('[ASP] Unsupported operating system')
+
             ASPMapper.get_instance().register_class(Drawn)
             ASPMapper.get_instance().register_class(Row)
             ASPMapper.get_instance().register_class(Column)
