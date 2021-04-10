@@ -19,7 +19,7 @@ import traceback
 import platform
 
 logger = logging.getLogger('debug')
-SOURCE = 'src/asp/agent.asp'
+SOURCE = 'src/asp/phases.asp'
 
 class PlayerAgent(Agent):
 
@@ -74,7 +74,7 @@ class PlayerAgent(Agent):
                 chains.append(chain)
 
             logger.debug('[CHAIN] Count: {}'.format(len(chains)))
-            
+
 
             return self.get_solution(self.get_answer_sets(), Step)
 
