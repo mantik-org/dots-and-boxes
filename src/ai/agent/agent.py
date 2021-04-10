@@ -3,6 +3,10 @@ from ...asp.row import Row
 from ...asp.column import Column
 from ...asp.step import Step
 from ...asp.phase import Phase
+from ...asp.chain import Chain
+from ...asp.valence import Valence
+from ...asp.grid import Grid
+from ...asp.square import Square
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -28,6 +32,10 @@ class Agent:
         ASPMapper.get_instance().register_class(Column)
         ASPMapper.get_instance().register_class(Step)
         ASPMapper.get_instance().register_class(Phase)
+        ASPMapper.get_instance().register_class(Chain)
+        ASPMapper.get_instance().register_class(Valence)
+        ASPMapper.get_instance().register_class(Grid)
+        ASPMapper.get_instance().register_class(Square)
 
     def __init__(self, sources, options):
 
@@ -74,6 +82,8 @@ class Agent:
         self.handler.remove_program_from_id(program_id)
 
 
+        #logger.debug('[ASP] Got answer sets: {}'.format(answer_sets.get_answer_sets_string()))
+
         if 'OPTIMUM' in answer_sets.get_answer_sets_string():
             answer_sets = answer_sets.get_optimal_answer_sets()
         else:
@@ -98,7 +108,7 @@ class Agent:
         if len(sol) == 0:
             raise Exception('[ASP] No solution found')
 
-        return sol
+        return sol[0]
 
 
     def play(self):

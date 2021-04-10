@@ -3,6 +3,7 @@ import asyncio
 import websockets
 import json
 import sys
+import traceback
 
 from time import sleep
 from .game_match import GameMatch
@@ -52,6 +53,7 @@ class Game:
 
         except Exception as e:
             logger.error('[NETWORK] Exception {}'.format(e))
+            traceback.print_exc()
 
 
     def init_match(self, identifier, player, grid, socket):

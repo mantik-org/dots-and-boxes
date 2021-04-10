@@ -4,10 +4,17 @@ from lib.embasp.languages.predicate import Predicate
 class Chain(Predicate):
     predicate_name = "chain"
 
-    def __init__(self, row=None, column=None):
-        Predicate.__init__(self, [("row", int), ("column", int)])
+    def __init__(self, identifier=None, row=None, column=None):
+        Predicate.__init__(self, [("identifier", int), ("row", int), ("column", int)])
         self.row = row
         self.column = column
+        self.identifier = identifier
+
+    def get_identifier(self):
+        return self.identifier
+    
+    def set_identifier(self, identifier):
+        self.identifier = identifier
 
     def get_row(self):
         return self.row
@@ -22,4 +29,4 @@ class Chain(Predicate):
         self.column = column
 
     def __str__(self):
-        return Chain.predicate_name + "(" + str(self.row) + "," + str(self.column) + ")."
+        return Chain.predicate_name + "(" + str(self.identifier) + "," + str(self.row) + "," + str(self.column) + ")."

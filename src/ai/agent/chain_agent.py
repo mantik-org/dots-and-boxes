@@ -3,8 +3,7 @@ from .agent import Agent
 from ...asp.drawn import Drawn
 from ...asp.row import Row
 from ...asp.column import Column
-from ...asp.step import Step
-from ...asp.phase import Phase
+from ...asp.chain import Chain
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -20,25 +19,19 @@ import platform
 logger = logging.getLogger('debug')
 SOURCE = 'src/asp/chain.asp'
 
-class ChainCounterAgent(Agent):
+class ChainAgent(Agent):
 
-    def __init__(self):
-        super.__init__([ SOURCE ], [ '-n0' ])
+    def __init__(self, player):
+        Agent.__init__(self, [ 'src/asp/statement.asp', SOURCE ], [ '-n0' ])
+        self.player = player
     
 
     def get_objects(self):
-
-        objects = []
-        
-        for i in objects:
-            logger.debug('[ASP] Generated object: {}'.format(i))
-
-        return objects
-
+        return self.player.get_objects()
     
     def play(self):
         try:
-            return self.get_solution(self.get_answer_sets(), Step)
+            return self.get_solution(self.get_answer_sets(), Chain)
         except Exception as e:
             logger.error(e)
             traceback.print_exc()
