@@ -96,7 +96,7 @@ class Game:
                 }))
             )
 
-            sleep(0.1)
+            #sleep(0.1)
 
 
     def run(self, host, port):

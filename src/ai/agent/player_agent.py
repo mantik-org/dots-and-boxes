@@ -1,11 +1,12 @@
 from .agent import Agent
 from.chain_agent import ChainAgent
 
-from ...asp.drawn import Drawn
-from ...asp.row import Row
-from ...asp.column import Column
-from ...asp.step import Step
-from ...asp.chain import Chain
+from ...asp.models.drawn import Drawn
+from ...asp.models.row import Row
+from ...asp.models.column import Column
+from ...asp.models.step import Step
+from ...asp.models.chain import Chain
+from ...asp.models.cycle import Cycle
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -31,8 +32,9 @@ class PlayerAgent(Agent):
         self.match = match
         self.socket = socket
         self.chain = ChainAgent(self)
+        self.board_objects = []
 
-    
+
     def get_objects(self):
 
         objects = []
@@ -50,9 +52,25 @@ class PlayerAgent(Agent):
                 for o in orientation:
                     if self.match.board[i][j][o] != 0:
                         objects.append(Drawn(i, j, SymbolicConstant(o)))
-        
-        #for i in objects:
-        #    logger.debug('[ASP] Generated object: {}'.format(i))
+
+        self.board_objects = objects
+
+
+        i = 0
+        chains = 0
+        cycles = 0
+        answer_sets = self.chain.get_answer_sets()
+
+        for answer_set in answer_sets:
+            i += 1
+            for atom in answer_set.get_atoms():
+                if isinstance(atom, Chain):
+                    objects.append(Chain(i, atom.get_row(), atom.get_column()))
+                    chains += 1
+                elif isinstance(atom, Cycle):
+                    objects.append(Cycle(i, atom.get_row(), atom.get_column()))
+                    cycles += 1
+        logger.info('Chains / Cycles {} {}'.format(chains, cycles))
 
         return objects
 
@@ -60,21 +78,6 @@ class PlayerAgent(Agent):
     
     def play(self):
         try:
-
-            i = 0
-            chains = []
-            answer_sets = self.chain.get_answer_sets()
-
-            for answer_set in answer_sets:
-                chain = []
-                for atom in answer_set.get_atoms():
-                    if isinstance(atom, Chain):
-                        chain.append(Chain(i, atom.get_row(), atom.get_column()))
-                        i += 1
-                chains.append(chain)
-
-            logger.debug('[CHAIN] Count: {}'.format(len(chains)))
-
 
             return self.get_solution(self.get_answer_sets(), Step)
 

@@ -32,6 +32,9 @@
 phase(1).
 
 
+% Chains
+%bigchain(X) :- chain(X, L, _, _), L = #max { H, K : chain(K, H, _, _) }. 
+
 
 %
 % Guess & Check
@@ -50,11 +53,9 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 % 4. Optimize
 %   - Phase 1.
 %       1. Do not create a box with a valence of 1.
-:~ phase(1), step(I, J, D), valence(M, N, 2), in_square(I, J, D, M, N). [ 1@2, I, J, D ]
+:~ phase(1), step(I, J, D), valence(M, N, 2), in_square(I, J, D, M, N). [ 1@3, I, J, D ]
 %       2. Try to be the first player to enter the second phase.
 :~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2). [ 1@1, I1, J1, D1 ]
-
-
 
 
 %:~ phase(1), chain(I, J). [ 1@2, I, J ]

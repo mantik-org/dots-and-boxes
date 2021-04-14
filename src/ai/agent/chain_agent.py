@@ -1,9 +1,9 @@
 from .agent import Agent
 
-from ...asp.drawn import Drawn
-from ...asp.row import Row
-from ...asp.column import Column
-from ...asp.chain import Chain
+from ...asp.models.drawn import Drawn
+from ...asp.models.row import Row
+from ...asp.models.column import Column
+from ...asp.models.chain import Chain
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -27,7 +27,7 @@ class ChainAgent(Agent):
     
 
     def get_objects(self):
-        return self.player.get_objects()
+        return self.player.board_objects
     
     def play(self):
         try:
