@@ -9,6 +9,7 @@ from ...asp.models.cycle import Cycle
 from ...asp.models.valence import Valence
 from ...asp.models.grid import Grid
 from ...asp.models.square import Square
+from ...asp.models.player import Player
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -40,6 +41,7 @@ class Agent:
         ASPMapper.get_instance().register_class(Valence)
         ASPMapper.get_instance().register_class(Grid)
         ASPMapper.get_instance().register_class(Square)
+        ASPMapper.get_instance().register_class(Player)
 
     def __init__(self, sources, options):
 
