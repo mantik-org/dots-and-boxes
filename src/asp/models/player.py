@@ -24,19 +24,20 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-import logging
-import sys
+from lib.embasp.languages.predicate import Predicate
 
-from .core.game import Game
+class Player(Predicate):
+    predicate_name = "player"
 
+    def __init__(self, index=None):
+        Predicate.__init__(self, [("index", int)])
+        self.index = index
 
-def main():
+    def get_index(self):
+        return self.index
 
-    logger = logging.getLogger('debug')
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.StreamHandler(sys.stderr))
-    
-    Game.getInstance().run('localhost', 8089)
+    def set_index(self, index):
+        self.index = index
 
-if __name__ == '__main__':
-    main()
+    def __str__(self):
+        return Player.predicate_name + "(" + str(self.index) + ")."

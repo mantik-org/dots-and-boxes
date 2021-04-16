@@ -1,11 +1,39 @@
+#                                                                      
+# GPL3 License 
+#
+# Author(s):                                                              
+#      Antonino Natale <ntlnnn97r06e041t@studenti.unical.it>
+#      Matteo Perfidio <prfmtt98e07f537p@studenti.unical.it>
+# 
+# 
+# Copyright (C) 2021 AI Namp
+#
+# This file is part of DotsAndBoxesAI.  
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+#
+
 import logging
 import asyncio
 import websockets
 import json
 import sys
+import traceback
 
 from time import sleep
 from .game_match import GameMatch
+from ..ai.agent.agent import Agent
 
 logger = logging.getLogger('debug')
 
@@ -51,6 +79,7 @@ class Game:
 
         except Exception as e:
             logger.error('[NETWORK] Exception {}'.format(e))
+            traceback.print_exc()
 
 
     def init_match(self, identifier, player, grid, socket):
@@ -93,14 +122,18 @@ class Game:
                 }))
             )
 
-            sleep(0.1)
+            #sleep(0.1)
 
 
     def run(self, host, port):
 
         logger.info('[GAME] Running...')
+        Agent.initMappings()
+
 
         self.server = websockets.serve(Game.on_network_data, host, port)
+
+        logger.info('[NETWORK] Listening...')
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()
 

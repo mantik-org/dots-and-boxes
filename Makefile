@@ -1,7 +1,8 @@
 .PHONY: all init clean
 
-PORT 	?= 8080
-RMTDIR 	?= $(PWD)/lib/remote
+PORT 		?= 8080
+AGENT_PORT 	?= 8089
+RMTDIR 		?= $(PWD)/lib/remote
 
 all: init
 
@@ -13,7 +14,7 @@ run-server:
 	@python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)
 
 run-agent:
-	@python3 $(RMTDIR)/dotsandboxesagent.py $(PORT)
+	@python3 $(RMTDIR)/dotsandboxescompete.py $(AGENT_PORT)
 
 run:
 	@python3 -m src

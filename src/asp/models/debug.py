@@ -24,19 +24,35 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-import logging
-import sys
+from lib.embasp.languages.predicate import Predicate
+from lib.embasp.languages.asp.symbolic_constant import SymbolicConstant
 
-from .core.game import Game
+class Debug(Predicate):
+    predicate_name = "debug"
 
+    def __init__(self, predicate=None, arg0=None, arg1=None):
+        Predicate.__init__(self, [("predicate", SymbolicConstant), ("arg0", int), ("arg1", int)])
+        self.predicate = predicate
+        self.arg0 = arg0
+        self.arg1 = arg1
 
-def main():
+    def get_predicate(self):
+        return self.predicate
 
-    logger = logging.getLogger('debug')
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.StreamHandler(sys.stderr))
-    
-    Game.getInstance().run('localhost', 8089)
+    def set_predicate(self, predicate):
+        self.predicate = predicate
 
-if __name__ == '__main__':
-    main()
+    def get_arg0(self):
+        return self.arg0
+
+    def set_arg0(self, arg0):
+        self.arg0 = arg0
+
+    def get_arg1(self):
+        return self.arg1
+
+    def set_arg1(self, arg1):
+        self.arg1 = arg1
+
+    def __str__(self):
+        return Debug.predicate_name + "(" + str(self.predicate) + "," + str(self.arg0) + "," + str(self.arg1) + ")."

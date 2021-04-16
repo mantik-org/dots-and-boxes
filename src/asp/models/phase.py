@@ -24,19 +24,20 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-import logging
-import sys
+from lib.embasp.languages.predicate import Predicate
 
-from .core.game import Game
+class Phase(Predicate):
+    predicate_name = "phase"
 
+    def __init__(self, phase=None):
+        Predicate.__init__(self, [("phase", int)])
+        self.phase = phase
 
-def main():
+    def get_phase(self):
+        return self.phase
 
-    logger = logging.getLogger('debug')
-    logger.setLevel(logging.DEBUG)
-    logger.addHandler(logging.StreamHandler(sys.stderr))
-    
-    Game.getInstance().run('localhost', 8089)
+    def set_phase(self, phase):
+        self.phase = phase
 
-if __name__ == '__main__':
-    main()
+    def __str__(self):
+        return Phase.predicate_name + "(" + str(self.phase) + ")."
