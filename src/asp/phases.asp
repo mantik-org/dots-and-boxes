@@ -80,7 +80,7 @@ grid_size(even) :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) },
 grid_size(odd)  :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) }, N = Z / 2 * 2, Z = X + Y, Z != N.
 %
 % Calculate number of chains and cycles inside the current board state.
-chain_count(Z) :- phase(1), X = #count { K : chain(K, _, _) }, Y = #count { K : cycle(K, _, _) }, Z = X + Y.
+chain_count(Z) :- phase(1), X = #count { K : chain(K, _, _), chain_with_size(K, S), S > 2 }, Y = #count { K : cycle(K, _, _) }, Z = X + Y.
 
 
 
@@ -144,6 +144,7 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %%
 %debug(chain_count, Z, 0) :- Z = #max { K : chain_count(K) }.
 %debug(chain_turn_optimal, 0, 0) :- chain_turn(opt).
-debug(phase, X, 0) :- phase(X).
+%debug(phase, X, 0) :- phase(X).
+%% #show phase/1
 %debug(chain_with_size, I, S) :- chain_with_size(I, S).
 %debug(chain, I, 0) :- chain(I, _, _).
