@@ -2,10 +2,6 @@
 % Chains
 %
 
-%
-% Guess & Check
-%
-
 
 % 1. Guess
 in_chain(I, J) | out_chain(I, J) :- square(I, J).
