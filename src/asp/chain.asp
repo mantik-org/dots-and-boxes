@@ -26,11 +26,9 @@ inner_chain(I, J, R, C, D) :- in_chain(I, J), not drawn(R, C, D), in_square(R, C
 :- in_chain(I, J), in_chain(M, N), not chained(I, J, M, N).
 :- in_chain(I, J), out_chain(M, N), chain_path(I, J, M, N).
 
-
 % 3. Optimize
-:- not #count { I, J : in_chain(I, J) } > 2.
+:- not #count { I, J : in_chain(I, J) } > 0.
 
 % 4. Result
 chain(0, I, J) :- in_chain(I, J), not cycle(0, I, J).
 cycle(0, I, J) :- in_chain(I, J), #count { P, K : outer_chain(P, K) } == 0.
-

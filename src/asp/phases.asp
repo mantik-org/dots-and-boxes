@@ -1,8 +1,8 @@
 
 % Game phases
-phase(X) :- #count { I, J : valence(I, J, V), V > 2 } == 0, X = 2.
 phase(X) :- #count { I, J : valence(I, J, V), V > 2 } != 0, X = 1.
-
+phase(X) :- #count { I, J : valence(I, J, V), V > 2 } == 0, X = 2, not phase(3).
+phase(X) :- #count { I, J : valence(I, J, V), V > 2 } == 0, X = 3, #count { I : chain_with_size(I, S), S <= 2 } == 0.
 
 % Calculate if grid size is odd or even
 grid_size(even) :- X = #max { H : rows(H) }, Y = #max { H : cols(H) }, N = Z / 2 * 2, Z = X + Y, Z == N.
@@ -18,6 +18,9 @@ chain_turn(opt) :- phase(1), player(1), grid_size(odd), N = Z / 2 * 2, Z == N, Z
 % Grid size even: First player odd number of chains, second player even number of chains. 
 chain_turn(opt) :- phase(1), player(2), grid_size(even), N = Z / 2 * 2, Z == N, Z = #max { K : chain_count(K) }.
 chain_turn(opt) :- phase(1), player(1), grid_size(even), N = Z / 2 * 2, Z != N, Z = #max { K : chain_count(K) }.
+
+% Calculate size for each chain.
+chain_with_size(P, S) :- chain(P, _, _), S = #count { P, I, J : chain(P, I, J) }.
 
 
 %
@@ -49,12 +52,8 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 
 
 % Debug
-debug(chain_count_0) :- Z == 0, Z = #max { K : chain_count(K) }.
-debug(chain_count_1) :- Z == 1, Z = #max { K : chain_count(K) }.
-debug(chain_count_2) :- Z == 2, Z = #max { K : chain_count(K) }.
-debug(chain_count_3) :- Z == 3, Z = #max { K : chain_count(K) }.
-debug(chain_count_4) :- Z == 4, Z = #max { K : chain_count(K) }.
-debug(chain_count_5) :- Z == 5, Z = #max { K : chain_count(K) }.
-debug(chain_turn) :- chain_turn(opt).
-debug(phase_1) :- phase(1).
-debug(phase_2) :- phase(2).
+%debug(chain_count, Z, 0) :- Z = #max { K : chain_count(K) }.
+%debug(chain_turn_optimal, 0, 0) :- chain_turn(opt).
+debug(phase, X, 0) :- phase(X).
+%debug(chain_with_size, I, S) :- chain_with_size(I, S).
+%debug(chain, I, 0) :- chain(I, _, _).

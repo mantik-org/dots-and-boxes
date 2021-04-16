@@ -59,9 +59,11 @@ class PlayerAgent(Agent):
         self.board_objects = objects
 
 
+        i = 0
         answer_sets = self.chain.get_answer_sets()
 
         for answer_set in answer_sets:
+            i += 1
             for atom in answer_set.get_atoms():
                 if isinstance(atom, Chain):
                     objects.append(Chain(i, atom.get_row(), atom.get_column()))

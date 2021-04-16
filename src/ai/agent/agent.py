@@ -111,7 +111,7 @@ class Agent:
             if isinstance(obj, solution):
                 sol.append(obj)
             elif isinstance(obj, Debug):
-                logger.info('[DEBUG] Atom activated {}'.format(obj.get_predicate()))
+                logger.info('[DEBUG] Activated {}'.format(str(obj)))
 
         if len(sol) == 0:
             raise Exception('[ASP] No solution found')
