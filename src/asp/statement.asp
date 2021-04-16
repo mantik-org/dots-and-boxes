@@ -49,7 +49,3 @@ adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2, J1 
 adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2, J1 = J2 - 1.
 adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2.
 adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
-
-
-
-

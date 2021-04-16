@@ -1,3 +1,4 @@
+from ...asp.models.debug import Debug
 from ...asp.models.drawn import Drawn
 from ...asp.models.row import Row
 from ...asp.models.column import Column
@@ -28,6 +29,7 @@ class Agent:
     @staticmethod
     def initMappings():
         logger.info('[ASP] Registering object mapping')
+        ASPMapper.get_instance().register_class(Debug)
         ASPMapper.get_instance().register_class(Drawn)
         ASPMapper.get_instance().register_class(Row)
         ASPMapper.get_instance().register_class(Column)
@@ -106,6 +108,8 @@ class Agent:
         for obj in answer_set.get_atoms():
             if isinstance(obj, solution):
                 sol.append(obj)
+            elif isinstance(obj, Debug):
+                logger.info('[DEBUG] Atom activated {}'.format(obj.get_predicate()))
 
         if len(sol) == 0:
             raise Exception('[ASP] No solution found')
