@@ -56,7 +56,7 @@ class PhaseAgent(Agent):
     
 
     def get_objects(self):
-        objects = self.player.board_objects
+        objects = self.player.phase_objects
         objects.append(CurrentPhase(self.phase))
         return objects
     

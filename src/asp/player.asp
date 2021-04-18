@@ -35,20 +35,6 @@
 
 
 %%
-%% Utils
-%%
-% Calculate size for each chain.
-chain_with_size(P, S) :- chain(P, _, _), S = #count { P, I, J : chain(P, I, J) }.
-% Calculate size for each cycle.
-cycle_with_size(P, S) :- cycle(P, _, _), S = #count { P, I, J : cycle(P, I, J) }.
-% Calculate size for each chain and cycle.
-chain_and_cycle_with_size(P, S) :- chain_with_size(P, S).
-chain_and_cycle_with_size(P, S) :- cycle_with_size(P, S).
-% Calculate union between chain and cycle.
-chain_and_cycle(P, I, J) :- chain(P, I, J).
-chain_and_cycle(P, I, J) :- cycle(P, I, J).
-
-%%
 %% Chain Rule
 %%
 %   The chain rule tells you how many chains you should make to force your opponent to open 

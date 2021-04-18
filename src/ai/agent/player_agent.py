@@ -99,6 +99,8 @@ class PlayerAgent(Agent):
                 elif isinstance(atom, Cycle):
                     objects.append(Cycle(i, atom.get_row(), atom.get_column()))
 
+        self.phase_objects = objects
+
 
         objects.append(self.phase.play())
 
