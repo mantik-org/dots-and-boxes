@@ -75,6 +75,11 @@ class GameMatch:
 
             game.update_match(self.identifier, identifier, [ next_move.row, next_move.column ], next_move.orientation, remote = True)
 
+        else:
+
+            for player in self.players.values():
+                player.update_state()
+
 
 
 

@@ -36,6 +36,7 @@ from ...asp.models.valence import Valence
 from ...asp.models.grid import Grid
 from ...asp.models.square import Square
 from ...asp.models.player import Player
+from ...asp.models.current_phase import CurrentPhase
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -68,6 +69,7 @@ class Agent:
         ASPMapper.get_instance().register_class(Grid)
         ASPMapper.get_instance().register_class(Square)
         ASPMapper.get_instance().register_class(Player)
+        ASPMapper.get_instance().register_class(CurrentPhase)
 
     def __init__(self, sources, options):
 
@@ -125,12 +127,13 @@ class Agent:
 
 
 
-    def get_solution(self, answer_sets, solution):
+    def get_solution(self, answer_sets, solution, *args):
 
         if len(answer_sets) == 0:
             raise Exception('[ASP] No answer set found')
 
         sol = []
+        opt = []
         answer_set = answer_sets[0]
 
         for obj in answer_set.get_atoms():
@@ -138,11 +141,15 @@ class Agent:
                 sol.append(obj)
             elif isinstance(obj, Debug):
                 logger.info('[DEBUG] Activated {}'.format(str(obj)))
+            else:
+                for arg in args:
+                    if isinstance(obj, arg):
+                        opt.append(obj)
 
         if len(sol) == 0:
             raise Exception('[ASP] No solution found')
 
-        return sol[0]
+        return ( sol[0], opt )
 
 
     def play(self):

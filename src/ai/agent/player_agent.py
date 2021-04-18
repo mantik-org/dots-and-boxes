@@ -26,6 +26,7 @@
 
 from .agent import Agent
 from.chain_agent import ChainAgent
+from.phase_agent import PhaseAgent
 
 from ...asp.models.drawn import Drawn
 from ...asp.models.row import Row
@@ -34,6 +35,7 @@ from ...asp.models.step import Step
 from ...asp.models.chain import Chain
 from ...asp.models.cycle import Cycle
 from ...asp.models.player import Player
+from ...asp.models.phase import Phase
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -47,7 +49,7 @@ import traceback
 import platform
 
 logger = logging.getLogger('debug')
-SOURCE = 'src/asp/phases.asp'
+SOURCE = 'src/asp/player.asp'
 
 class PlayerAgent(Agent):
 
@@ -59,6 +61,7 @@ class PlayerAgent(Agent):
         self.match = match
         self.socket = socket
         self.chain = ChainAgent(self)
+        self.phase = PhaseAgent(self)
         self.board_objects = []
 
 
@@ -67,7 +70,7 @@ class PlayerAgent(Agent):
         objects = []
         orientation = ['v', 'h']
 
-
+    
         objects.append(Player(self.id))
 
         for i in range(self.match.rows + 1):
@@ -96,13 +99,18 @@ class PlayerAgent(Agent):
                 elif isinstance(atom, Cycle):
                     objects.append(Cycle(i, atom.get_row(), atom.get_column()))
 
+
+        objects.append(self.phase.play())
+
         return objects
 
     
+    def update_state(self):
+        return self.phase.play()
     
     def play(self):
         try:
-            return self.get_solution(self.get_answer_sets(), Step)
+            return self.get_solution(self.get_answer_sets(), Step)[0]
         except Exception as e:
             logger.error(e)
             traceback.print_exc()
