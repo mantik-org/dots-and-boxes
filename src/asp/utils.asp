@@ -76,6 +76,13 @@ adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1,
 adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
 %
 %
+% Check if two SQUARE are not equal.
+neq_square(I, J, M, N) :- square(I, J), square(M, N), I + J != M + N, I - J != M - N.
+%
+% Check if two SQUARE shares same empty line.
+adj_empty(I, J, D, M1, N1, M2, N2) :- grid(I, J, D), square(M1, N1), square(M2, N2), in_square(I, J, D, M1, N1), in_square(I, J, D, M2, N2), not drawn(I, J, D).
+%
+%
 %
 % Calculate size for each chain.
 % N.B: chains and cycle are calculated by chain.asp

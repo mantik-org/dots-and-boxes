@@ -104,7 +104,17 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 :~ phase(Z), Z > 1, not_step(I, J, D), chain_and_cycle_with_size(P, S), chain_and_cycle(P, M, N), in_square(I, J, D, M, N), S = #min { K, Q : chain_and_cycle_with_size(Q, K) }. [ 1@1, I, J, D ] 
 %
 %       2. Applying Double Dealing for chains, if beneficial. 
-:~ phase(3), not_step(I, J, D), valence(M1, N1, 2), valence(M2, N2, 1), in_square(I, J, D, M1, N1), not in_square(I, J, D, M2, N2), in_square(I1, J1, D1, M1, N1), in_square(I1, J1, D1, M2, N2), not drawn(I1, J1, D1), chain_with_size(K, 1), chain(K, M1, N1). [ 1@6, I, J, D ]
+:~ phase(3), not_step(I, J, D), valence(M1, N1, 2), valence(M2, N2, 1), in_square(I, J, D, M1, N1), not in_square(I, J, D, M2, N2), 
+                                adj_empty(_, _, _, M1, N1, M2, N2), 
+                                chain_with_size(K, 1), chain(K, M1, N1). [ 1@7, I, J, D ]
+%
+%       3. Applying Double Dealing for cycles, if beneficial.
+:~ phase(3), not_step(I, J, D), valence(M3, N3, 1), valence(M4, N4, 1), neq_square(M3, N3, M4, N4), 
+                                valence(M1, N1, 2), valence(M2, N2, 2), neq_square(M1, N1, M2, N2),
+                                adj_empty(I, J, D, M1, N1, M2, N2),
+                                adj_empty(_, _, _, M1, N1, M3, N3),
+                                adj_empty(_, _, _, M2, N2, M4, N4),
+                                chain_with_size(K, 2), chain(K, M1, N1), chain(K, M2, N2). [ 1@6, I, J, D ]
 %
 %
 %   - Exception Phase.
