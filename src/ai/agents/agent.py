@@ -24,7 +24,6 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-from ...asp.models.debug import Debug
 from ...asp.models.drawn import Drawn
 from ...asp.models.row import Row
 from ...asp.models.column import Column
@@ -32,9 +31,6 @@ from ...asp.models.step import Step
 from ...asp.models.phase import Phase
 from ...asp.models.chain import Chain
 from ...asp.models.cycle import Cycle
-from ...asp.models.valence import Valence
-from ...asp.models.grid import Grid
-from ...asp.models.square import Square
 from ...asp.models.score import Score
 from ...asp.models.player import Player
 from ...asp.models.current_phase import CurrentPhase
@@ -59,7 +55,6 @@ class Agent:
     @staticmethod
     def initMappings():
         logger.info('[ASP] Registering object mapping')
-        ASPMapper.get_instance().register_class(Debug)
         ASPMapper.get_instance().register_class(Drawn)
         ASPMapper.get_instance().register_class(Row)
         ASPMapper.get_instance().register_class(Column)
@@ -67,9 +62,6 @@ class Agent:
         ASPMapper.get_instance().register_class(Phase)
         ASPMapper.get_instance().register_class(Chain)
         ASPMapper.get_instance().register_class(Cycle)
-        ASPMapper.get_instance().register_class(Valence)
-        ASPMapper.get_instance().register_class(Grid)
-        ASPMapper.get_instance().register_class(Square)
         ASPMapper.get_instance().register_class(Score)
         ASPMapper.get_instance().register_class(Player)
         ASPMapper.get_instance().register_class(CurrentPhase)
@@ -147,8 +139,6 @@ class Agent:
             for obj in answer_set.get_atoms():
                 if isinstance(obj, solution):
                     sol.append(obj)
-                elif isinstance(obj, Debug):
-                    logger.info('[DEBUG] Activated {}'.format(str(obj)))
                 else:
                     for arg in args:
                         if isinstance(obj, arg):

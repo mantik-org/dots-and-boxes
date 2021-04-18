@@ -33,7 +33,7 @@ import traceback
 
 from time import sleep
 from .game_match import GameMatch
-from ..ai.agent.agent import Agent
+from ..ai.agents.agent import Agent
 
 logger = logging.getLogger('debug')
 

@@ -25,7 +25,7 @@
 #
 
 import logging
-from ..ai.agent.player_agent import PlayerAgent
+from ..ai.agents.player_agent import PlayerAgent
 
 logger = logging.getLogger('debug')
 

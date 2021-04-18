@@ -141,15 +141,3 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %          we can fill it in.
 :~ not_step(I, J, D), valence(M, N, 1), in_square(I, J, D, M, N). [ 1@5, I, J, D ]
 
-
-
-
-
-%%
-%% Debug
-%%
-debug(phase, P, 0, 0) :- phase(P).
-debug(current_phase, P, 0, 0) :- current_phase(P).
-debug(score, I, P, 0) :- player(I), score(I, P).
-debug(double_dealing, 1, 0, 0) :- double_dealing(chain, opt).
-debug(double_dealing, 0, 0, 0) :- double_dealing(cycle, opt).
