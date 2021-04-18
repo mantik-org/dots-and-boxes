@@ -55,7 +55,7 @@ class PlayerAgent(Agent):
 
     def __init__(self, id=None, socket=None, match=None):
 
-        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [])
+        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [ '-n5' ])
 
         self.id = id
         self.match = match
@@ -89,7 +89,7 @@ class PlayerAgent(Agent):
 
 
         i = 0
-        answer_sets = self.chain.get_answer_sets()
+        answer_sets = self.chain.get_answer_sets()[0]
 
         for answer_set in answer_sets:
             i += 1
@@ -112,7 +112,7 @@ class PlayerAgent(Agent):
     
     def play(self):
         try:
-            return self.get_solution(self.get_answer_sets(), Step)[0]
+            return self.get_solution(*self.get_answer_sets(), Step)[0]
         except Exception as e:
             logger.error(e)
             traceback.print_exc()

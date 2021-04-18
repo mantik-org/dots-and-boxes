@@ -63,7 +63,7 @@ class PhaseAgent(Agent):
     def play(self):
         try:
 
-            phase_object = self.get_solution(self.get_answer_sets(), Phase)[0]
+            phase_object = self.get_solution(*self.get_answer_sets(), Phase)[0]
 
             self.phase = phase_object.get_phase()
             return phase_object

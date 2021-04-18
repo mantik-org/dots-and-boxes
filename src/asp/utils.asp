@@ -76,7 +76,9 @@ adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1,
 adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
 %
 %
+%
 % Calculate size for each chain.
+% N.B: chains and cycle are calculated by chain.asp
 chain_with_size(P, S) :- chain(P, _, _), S = #count { P, I, J : chain(P, I, J) }.
 % Calculate size for each cycle.
 cycle_with_size(P, S) :- cycle(P, _, _), S = #count { P, I, J : cycle(P, I, J) }.
