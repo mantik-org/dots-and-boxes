@@ -36,6 +36,7 @@ from ...asp.models.chain import Chain
 from ...asp.models.cycle import Cycle
 from ...asp.models.player import Player
 from ...asp.models.phase import Phase
+from ...asp.models.score import Score
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -72,6 +73,8 @@ class PlayerAgent(Agent):
 
     
         objects.append(Player(self.id))
+        objects.append(Score(1, self.match.score[0]))
+        objects.append(Score(2, self.match.score[1]))
 
         for i in range(self.match.rows + 1):
             objects.append(Row(i))

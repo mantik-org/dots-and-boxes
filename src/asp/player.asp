@@ -29,6 +29,7 @@
 %% External Inputs
 %%
 %% player(I):           Player ID.
+%% score(I, P):         Score of each player in the current match.
 %% drawn(I, J):         Lines alredy drawn in the current board state.
 %% rows(I), cols(I):    Rows and Columns of the board.
 %% current_phase(I):    Last phase of the current board state.

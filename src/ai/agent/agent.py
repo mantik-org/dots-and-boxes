@@ -35,6 +35,7 @@ from ...asp.models.cycle import Cycle
 from ...asp.models.valence import Valence
 from ...asp.models.grid import Grid
 from ...asp.models.square import Square
+from ...asp.models.score import Score
 from ...asp.models.player import Player
 from ...asp.models.current_phase import CurrentPhase
 
@@ -69,6 +70,7 @@ class Agent:
         ASPMapper.get_instance().register_class(Valence)
         ASPMapper.get_instance().register_class(Grid)
         ASPMapper.get_instance().register_class(Square)
+        ASPMapper.get_instance().register_class(Score)
         ASPMapper.get_instance().register_class(Player)
         ASPMapper.get_instance().register_class(CurrentPhase)
 
