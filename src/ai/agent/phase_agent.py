@@ -30,6 +30,8 @@ from ...asp.models.drawn import Drawn
 from ...asp.models.row import Row
 from ...asp.models.column import Column
 from ...asp.models.chain import Chain
+from ...asp.models.phase import Phase
+from ...asp.models.current_phase import CurrentPhase
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -43,16 +45,29 @@ import traceback
 import platform
 
 logger = logging.getLogger('debug')
-SOURCE = 'src/asp/chain.asp'
+SOURCE = 'src/asp/phase.asp'
 
-class ChainAgent(Agent):
+class PhaseAgent(Agent):
 
     def __init__(self, player):
-        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [ '-n0' ])
+        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [])
         self.player = player
+        self.phase = 1
+    
 
     def get_objects(self):
-        return self.player.board_objects
+        objects = self.player.phase_objects
+        objects.append(CurrentPhase(self.phase))
+        return objects
     
     def play(self):
-        pass
+        try:
+
+            phase_object = self.get_solution(*self.get_answer_sets(), Phase)[0]
+
+            self.phase = phase_object.get_phase()
+            return phase_object
+
+        except Exception as e:
+            logger.error(e)
+            traceback.print_exc()

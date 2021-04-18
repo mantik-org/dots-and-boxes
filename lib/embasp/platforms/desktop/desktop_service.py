@@ -85,17 +85,17 @@ class DesktopService(Service):
         if self._load_from_stdin_option != "" and final_program != "":
             lis.append(self._load_from_stdin_option)
 
-        print(exep + " ", end='')
-        if opt != "":
-            print(opt + " ", end='')
-        for path in files_paths:
-            print(path + " ", end='')
-        if final_program != "":
-            print(self._load_from_stdin_option)
-        else:
-            print()
+        # print(exep + " ", end='')
+        # if opt != "":
+        #     print(opt + " ", end='')
+        # for path in files_paths:
+        #     print(path + " ", end='')
+        # if final_program != "":
+        #     print(self._load_from_stdin_option)
+        # else:
+        #     print()
             
-        start = int(time.time() * 1e+9)
+        #start = int(time.time() * 1e+9)
 
         proc = subprocess.Popen(
             lis,
@@ -107,9 +107,9 @@ class DesktopService(Service):
 
         output, error = proc.communicate(final_program)
 
-        end = int(time.time() * 1e+9)
+        #end = int(time.time() * 1e+9)
 
-        print("Total time : " + str(end - start))
-        print("")
+        #print("Total time : " + str(end - start))
+        #print("")
 
         return self._get_output(output, error)

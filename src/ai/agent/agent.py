@@ -35,7 +35,9 @@ from ...asp.models.cycle import Cycle
 from ...asp.models.valence import Valence
 from ...asp.models.grid import Grid
 from ...asp.models.square import Square
+from ...asp.models.score import Score
 from ...asp.models.player import Player
+from ...asp.models.current_phase import CurrentPhase
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -47,6 +49,7 @@ from lib.embasp.base.option_descriptor import OptionDescriptor
 import logging
 import traceback
 import platform
+import random
 
 logger = logging.getLogger('debug')
 
@@ -67,7 +70,9 @@ class Agent:
         ASPMapper.get_instance().register_class(Valence)
         ASPMapper.get_instance().register_class(Grid)
         ASPMapper.get_instance().register_class(Square)
+        ASPMapper.get_instance().register_class(Score)
         ASPMapper.get_instance().register_class(Player)
+        ASPMapper.get_instance().register_class(CurrentPhase)
 
     def __init__(self, sources, options):
 
@@ -114,35 +119,52 @@ class Agent:
         self.handler.remove_program_from_id(program_id)
 
 
-        #logger.debug('[ASP] Got answer sets: {}'.format(answer_sets.get_answer_sets_string()))
+        optimum = False
 
         if 'OPTIMUM' in answer_sets.get_answer_sets_string():
             answer_sets = answer_sets.get_optimal_answer_sets()
+            optimum = True
         else:
             answer_sets = answer_sets.get_answer_sets()
 
-        return answer_sets
+        return ( answer_sets, optimum )
 
 
 
-    def get_solution(self, answer_sets, solution):
+    def get_solution(self, answer_sets, optimum , solution, *args):
 
         if len(answer_sets) == 0:
             raise Exception('[ASP] No answer set found')
 
-        sol = []
-        answer_set = answer_sets[0]
 
-        for obj in answer_set.get_atoms():
-            if isinstance(obj, solution):
-                sol.append(obj)
-            elif isinstance(obj, Debug):
-                logger.info('[DEBUG] Activated {}'.format(str(obj)))
+        sol = []
+        opt = []
+
+        if optimum:
+            answer_sets = answer_sets[0:1]
+
+        for answer_set in answer_sets:
+            for obj in answer_set.get_atoms():
+                if isinstance(obj, solution):
+                    sol.append(obj)
+                elif isinstance(obj, Debug):
+                    logger.info('[DEBUG] Activated {}'.format(str(obj)))
+                else:
+                    for arg in args:
+                        if isinstance(obj, arg):
+                            opt.append(obj)
+
 
         if len(sol) == 0:
             raise Exception('[ASP] No solution found')
 
-        return sol[0]
+
+        preferred = sol[0]
+
+        if not optimum:
+            preferred = random.choice(sol)
+
+        return ( preferred, opt )
 
 
     def play(self):

@@ -30,7 +30,7 @@
 %%
 % 1. Guess
 %   - Calculate all possibile chain path for the current board state.
-in_chain(I, J) | out_chain(I, J) :- square(I, J).
+in_chain(I, J) | out_chain(I, J) :- valence(I, J, 2).
 %
 %
 % 2. Check
