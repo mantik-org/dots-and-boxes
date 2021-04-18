@@ -61,6 +61,21 @@ chain_count(Z) :- phase(1), X = #count { K : chain(K, _, _), chain_with_size(K, 
 
 
 %%
+%% Double Dealing
+%%
+% One strategy a player can employ in order keep control is called ”Double-dealing”.
+% To perform this strategy, the player in control completes all the boxes
+% in a chain, except for the last two, creating two adjacent boxes of valence 1 
+% that share their empty line.
+% 
+% Calculate if beneficial for a chain
+double_dealing(chain, opt) :- phase(3), player(I), score(I, P), R = #max { K : rows(K) }, 
+                                                                C = #max { K : cols(K) }, P + 2 <= (R * C) / 2.
+% Calculate if beneficial for a cycle
+double_dealing(cycle, opt) :- phase(3), player(I), score(I, P), R = #max { K : rows(K) }, 
+                                                                C = #max { K : cols(K) }, P + 4 <= (R * C) / 2.
+
+%%
 %% Guess, Check & Optimize
 %%
 % 1. Prepare
@@ -104,18 +119,21 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %          during the short chain phase. 
 :~ phase(Z), Z > 1, not_step(I, J, D), chain_and_cycle_with_size(P, S), chain_and_cycle(P, M, N), in_square(I, J, D, M, N), S = #min { K, Q : chain_and_cycle_with_size(Q, K) }. [ 1@1, I, J, D ] 
 %
-%       2. Applying Double Dealing for chains, if beneficial. 
+%       2. Give away all double crosses.
+:~ phase(3), not_step(I, J, D), valence(M1, N1, 1), valence(M2, N2, 1), neq_square(M1, N1, M2, N2), adj_empty(I, J, D, M1, N1, M2, N2). [ 1@8, I, J, D ]
+%
+%       3. Applying Double Dealing for chains, if beneficial. 
 :~ phase(3), not_step(I, J, D), valence(M1, N1, 2), valence(M2, N2, 1), in_square(I, J, D, M1, N1), not in_square(I, J, D, M2, N2), 
                                 adj_empty(_, _, _, M1, N1, M2, N2), 
-                                chain_with_size(K, 1), chain(K, M1, N1). [ 1@7, I, J, D ]
+                                chain_with_size(K, 1), chain(K, M1, N1), double_dealing(chain, opt). [ 1@7, I, J, D ]
 %
-%       3. Applying Double Dealing for cycles, if beneficial.
+%       4. Applying Double Dealing for cycles, if beneficial.
 :~ phase(3), not_step(I, J, D), valence(M3, N3, 1), valence(M4, N4, 1), neq_square(M3, N3, M4, N4), 
                                 valence(M1, N1, 2), valence(M2, N2, 2), neq_square(M1, N1, M2, N2),
                                 adj_empty(I, J, D, M1, N1, M2, N2),
                                 adj_empty(_, _, _, M1, N1, M3, N3),
                                 adj_empty(_, _, _, M2, N2, M4, N4),
-                                chain_with_size(K, 2), chain(K, M1, N1), chain(K, M2, N2). [ 1@6, I, J, D ]
+                                chain_with_size(K, 2), chain(K, M1, N1), chain(K, M2, N2), double_dealing(cycle, opt). [ 1@6, I, J, D ]
 %
 %
 %   - Exception Phase.
@@ -130,10 +148,8 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %%
 %% Debug
 %%
-debug(chain_with_size, P, S, 0) :- chain_with_size(P, S).
-debug(chain, P, I, J) :- chain(P, I, J).
-debug(cycle_with_size, P, S, 0) :- cycle_with_size(P, S).
-debug(cycle, P, I, J) :- cycle(P, I, J).
-debug(double_dealing, 0, 0, 0) :- double_dealing(active).
 debug(phase, P, 0, 0) :- phase(P).
 debug(current_phase, P, 0, 0) :- current_phase(P).
+debug(score, I, P, 0) :- player(I), score(I, P).
+debug(double_dealing, 1, 0, 0) :- double_dealing(chain, opt).
+debug(double_dealing, 0, 0, 0) :- double_dealing(cycle, opt).

@@ -110,7 +110,7 @@ class PlayerAgent(Agent):
         return objects
 
     
-    def update_state(self):
+    def prepare(self):
         return self.phase.play()
     
     def play(self):

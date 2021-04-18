@@ -36,11 +36,12 @@ phase(X) :- current_phase(1), #max { V : valence(_, _, V) }  > 2, X = 1.
 % 2. Short Chain Phase:
 %       This is the part of the game in which all that is left is short chains, long chains, 
 %       and cycles, and in which players alternate giving away short chains. 
-phase(X) :- current_phase(1), #max { V : valence(_, _, V) } <= 2, X = 2.
+phase(X) :- current_phase(1), #max { V : valence(_, _, V) } <= 2, X = 2, #count { I : chain_with_size(I, S), S <= 2 } > 0.
 phase(X) :- current_phase(2), #max { V : valence(_, _, V) } <= 2, X = 2, #count { I : chain_with_size(I, S), S <= 2 } > 0.
 %
 % 3. Final Phase:
 %       This is the part of the game in which there are only chains and cycles left. 
+phase(X) :- current_phase(1), #max { V : valence(_, _, V) } <= 2, X = 3, not phase(2).
 phase(X) :- current_phase(2), #max { V : valence(_, _, V) } <= 2, X = 3, not phase(2).
 phase(X) :- current_phase(3), #max { V : valence(_, _, V) } <= 2, X = 3.
 

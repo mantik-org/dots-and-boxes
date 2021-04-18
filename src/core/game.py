@@ -104,6 +104,9 @@ class Game:
 
         logger.info('[GAME] Update board at {}:{} from {} / score: {}, nextplayer: {}, remote: {}'.format(location, orientation, player, score, nextplayer, remote))
 
+
+        self.matches[match].prepare(self, nextplayer)
+
         rows, cols = location
         self.matches[match].board[rows][cols][orientation] = player
 
