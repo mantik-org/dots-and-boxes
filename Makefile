@@ -1,5 +1,6 @@
 .PHONY: all init clean
 
+OUTPUT 		?= dots-and-boxes
 PORT 		?= 8080
 AGENT_PORT 	?= 8089
 RMTDIR 		?= $(PWD)/lib/remote
@@ -13,8 +14,19 @@ init:
 run-server:
 	@python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)
 
-run-agent:
-	@python3 $(RMTDIR)/dotsandboxescompete.py $(AGENT_PORT)
+run-interp:
+	@python3 -OO -m src
 
-run:
-	@python3 -m src
+build: $(OUTPUT)
+
+run: build
+	@chmod +x $(OUTPUT)
+	@./$(OUTPUT)
+
+clean:
+	@$(RM) -f $(OUTPUT)
+	@$(RM) -rf __main__.build
+
+
+$(OUTPUT): src/__main__.py
+	@nuitka3 $< --follow-imports --include-package=lib.embasp --include-package=src -o $(OUTPUT)

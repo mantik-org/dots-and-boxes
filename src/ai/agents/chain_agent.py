@@ -24,12 +24,12 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-from .agent import Agent
+from src.ai.agents.agent import Agent
 
-from ...asp.models.drawn import Drawn
-from ...asp.models.row import Row
-from ...asp.models.column import Column
-from ...asp.models.chain import Chain
+from src.asp.models.drawn import Drawn
+from src.asp.models.row import Row
+from src.asp.models.column import Column
+from src.asp.models.chain import Chain
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -48,7 +48,7 @@ SOURCE = 'src/asp/chain.asp'
 class ChainAgent(Agent):
 
     def __init__(self, player):
-        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [ '-n0' ])
+        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [ '-n0' ], [ 'chain/3', 'cycle/3' ])
         self.player = player
 
     def get_objects(self):

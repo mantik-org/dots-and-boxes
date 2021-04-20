@@ -31,9 +31,9 @@ import json
 import sys
 import traceback
 
-from time import sleep
-from .game_match import GameMatch
-from ..ai.agents.agent import Agent
+from src.core.game_match import GameMatch
+from src.ai.agents.agent import Agent
+
 
 logger = logging.getLogger('debug')
 
@@ -124,8 +124,6 @@ class Game:
                     'orientation'   : str(orientation)
                 }))
             )
-
-            #sleep(0.1)
 
 
     def run(self, host, port):

@@ -128,3 +128,6 @@ dmypy.json
 
 /.idea/
 /.vscode/
+
+__main__.build
+/dots-and-boxes

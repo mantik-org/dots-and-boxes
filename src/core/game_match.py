@@ -24,8 +24,10 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
+from src.ai.agents.player_agent import PlayerAgent
+
 import logging
-from ..ai.agents.player_agent import PlayerAgent
+
 
 logger = logging.getLogger('debug')
 
@@ -43,7 +45,7 @@ class GameMatch:
         self.rows = rows
         self.cols = cols
         self.board = []
-        self.score = []
+        self.score = [ 0, 0 ]
         self.players = {}
 
         for _ in range(rows + 1):
@@ -72,6 +74,7 @@ class GameMatch:
             self.board[next_move.row][next_move.column][next_move.orientation] = identifier
 
             logger.info('[GAME] Player {} drawn in {} from match <{}>'.format(identifier, next_move, self.identifier))
+
 
             game.update_match(self.identifier, identifier, [ next_move.row, next_move.column ], next_move.orientation, remote = True)
 

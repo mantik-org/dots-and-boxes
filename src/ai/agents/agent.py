@@ -46,14 +46,16 @@ import logging
 import traceback
 import platform
 import random
+import time
 
 logger = logging.getLogger('debug')
-
+filters = []
 
 class Agent:
 
     @staticmethod
     def initMappings():
+
         logger.info('[ASP] Registering object mapping')
         ASPMapper.get_instance().register_class(Drawn)
         ASPMapper.get_instance().register_class(Row)
@@ -66,7 +68,22 @@ class Agent:
         ASPMapper.get_instance().register_class(Player)
         ASPMapper.get_instance().register_class(CurrentPhase)
 
-    def __init__(self, sources, options):
+        logger.info('[ASP] Registering filters')
+        filters.append('drawn/3')
+        filters.append('rows/1')
+        filters.append('cols/1')
+        filters.append('step/3')
+        filters.append('phase/1')
+        filters.append('chain/3')
+        filters.append('cycle/3')
+        filters.append('score/2')
+        filters.append('player/1')
+        filters.append('current_phase/1')
+
+
+
+
+    def __init__(self, sources, options, dependencies=[]):
 
         self.sources = []
 
@@ -87,16 +104,24 @@ class Agent:
             else:
                 raise Exception('[ASP] Unsupported operating system')
 
+
+            if len(dependencies) == 0:
+                dependencies = filters
+
+            options.append('--filter={}'.format(','.join(dependencies)))
+
+
             for option in options:
                 self.handler.add_option(OptionDescriptor(option))
 
         except Exception as e:
-            print(str(e))
+            logger.error(str(e))
 
     
     def get_objects(self):
         pass
 
+    
     def get_answer_sets(self):
 
         input_program = ASPInputProgram()
@@ -107,10 +132,13 @@ class Agent:
 
 
         program_id = self.handler.add_program(input_program)
+        
+
         answer_sets = self.handler.start_sync()
         self.handler.remove_program_from_id(program_id)
 
 
+        start = time.time()
         optimum = False
 
         if 'OPTIMUM' in answer_sets.get_answer_sets_string():
@@ -118,6 +146,10 @@ class Agent:
             optimum = True
         else:
             answer_sets = answer_sets.get_answer_sets()
+
+        end = time.time()
+
+        logger.info("[BENCH] Running {} in {}s".format(self.__class__.__name__, (end - start)))
 
         return ( answer_sets, optimum )
 

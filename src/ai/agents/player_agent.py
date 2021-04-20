@@ -24,19 +24,19 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-from .agent import Agent
-from.chain_agent import ChainAgent
-from.phase_agent import PhaseAgent
+from src.ai.agents.agent import Agent
+from src.ai.agents.chain_agent import ChainAgent
+from src.ai.agents.phase_agent import PhaseAgent
 
-from ...asp.models.drawn import Drawn
-from ...asp.models.row import Row
-from ...asp.models.column import Column
-from ...asp.models.step import Step
-from ...asp.models.chain import Chain
-from ...asp.models.cycle import Cycle
-from ...asp.models.player import Player
-from ...asp.models.phase import Phase
-from ...asp.models.score import Score
+from src.asp.models.drawn import Drawn
+from src.asp.models.row import Row
+from src.asp.models.column import Column
+from src.asp.models.step import Step
+from src.asp.models.chain import Chain
+from src.asp.models.cycle import Cycle
+from src.asp.models.player import Player
+from src.asp.models.phase import Phase
+from src.asp.models.score import Score
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -48,6 +48,8 @@ from lib.embasp.base.option_descriptor import OptionDescriptor
 import logging
 import traceback
 import platform
+import time
+
 
 logger = logging.getLogger('debug')
 SOURCE = 'src/asp/player.asp'
@@ -56,7 +58,7 @@ class PlayerAgent(Agent):
 
     def __init__(self, id=None, socket=None, match=None):
 
-        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [ '-n5' ])
+        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [], [ 'step/3' ])
 
         self.id = id
         self.match = match
