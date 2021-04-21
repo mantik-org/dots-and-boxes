@@ -8,7 +8,7 @@ RMTDIR 		?= $(PWD)/lib/remote
 all: init
 
 init:
-	chmod +x lib/executable/dlv2linux
+	@chmod +x lib/executable/dlv2linux
 	@pip3 install -r requirements.txt
 
 run-server:
