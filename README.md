@@ -1,6 +1,6 @@
 # Dots And Boxes
 [![Build Status](https://travis-ci.com/ai-namp/dots-and-boxes.svg?branch=main)](https://travis-ci.com/ai-namp/dots-and-boxes)
-[![License: GPL3](https://img.shields.io/badge/License-GPL3-blue.svg)](/LICENSE)
+[![License: GPL](https://img.shields.io/badge/License-GPL-blue.svg)](/LICENSE)
 
 Pencil-and-paper game for two players.  
 
@@ -33,5 +33,5 @@ Open your web browser on http://localhost:8080 after successful build.
 
 Copyright (c) AI Namp. All rights reserved.
 
-Licensed under the [GPL3](/LICENSE) license.
+Licensed under the [GPL](/LICENSE) license.
 
