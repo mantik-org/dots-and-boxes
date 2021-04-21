@@ -16,7 +16,7 @@ DLV is an Answer Set Programming system, based on disjunctive logic programming,
 Notable sources are:
 - **Player Agent**, [asp/player.asp](https://github.com/ai-namp/dots-and-boxes/blob/main/src/asp/player.asp) AI for calculate next move to get best score.
 - **Phase Detector**, [asp/phase.asp](https://github.com/ai-namp/dots-and-boxes/blob/main/src/asp/phase.asp) detect and store status about current phase game.
-- **Chains/Cycles Detector**, [asp/phase.asp](https://github.com/ai-namp/dots-and-boxes/blob/main/src/asp/phase.asp) detect all chains and cycle inside the current board state.
+- **Chains/Cycles Detector**, [asp/chain.asp](https://github.com/ai-namp/dots-and-boxes/blob/main/src/asp/chain.asp) detect all chains and cycle inside the current board state.
 
 
 ## Build
