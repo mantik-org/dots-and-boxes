@@ -27,7 +27,7 @@
 import logging
 import sys
 
-from .core.game import Game
+from src.core.game import Game
 
 
 def main():

@@ -24,20 +24,16 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-from ...asp.models.debug import Debug
-from ...asp.models.drawn import Drawn
-from ...asp.models.row import Row
-from ...asp.models.column import Column
-from ...asp.models.step import Step
-from ...asp.models.phase import Phase
-from ...asp.models.chain import Chain
-from ...asp.models.cycle import Cycle
-from ...asp.models.valence import Valence
-from ...asp.models.grid import Grid
-from ...asp.models.square import Square
-from ...asp.models.score import Score
-from ...asp.models.player import Player
-from ...asp.models.current_phase import CurrentPhase
+from src.asp.models.drawn import Drawn
+from src.asp.models.row import Row
+from src.asp.models.column import Column
+from src.asp.models.step import Step
+from src.asp.models.phase import Phase
+from src.asp.models.chain import Chain
+from src.asp.models.cycle import Cycle
+from src.asp.models.score import Score
+from src.asp.models.player import Player
+from src.asp.models.current_phase import CurrentPhase
 
 from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
 from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
@@ -50,16 +46,17 @@ import logging
 import traceback
 import platform
 import random
+import time
 
 logger = logging.getLogger('debug')
-
+filters = []
 
 class Agent:
 
     @staticmethod
     def initMappings():
+
         logger.info('[ASP] Registering object mapping')
-        ASPMapper.get_instance().register_class(Debug)
         ASPMapper.get_instance().register_class(Drawn)
         ASPMapper.get_instance().register_class(Row)
         ASPMapper.get_instance().register_class(Column)
@@ -67,14 +64,26 @@ class Agent:
         ASPMapper.get_instance().register_class(Phase)
         ASPMapper.get_instance().register_class(Chain)
         ASPMapper.get_instance().register_class(Cycle)
-        ASPMapper.get_instance().register_class(Valence)
-        ASPMapper.get_instance().register_class(Grid)
-        ASPMapper.get_instance().register_class(Square)
         ASPMapper.get_instance().register_class(Score)
         ASPMapper.get_instance().register_class(Player)
         ASPMapper.get_instance().register_class(CurrentPhase)
 
-    def __init__(self, sources, options):
+        logger.info('[ASP] Registering filters')
+        filters.append('drawn/3')
+        filters.append('rows/1')
+        filters.append('cols/1')
+        filters.append('step/3')
+        filters.append('phase/1')
+        filters.append('chain/3')
+        filters.append('cycle/3')
+        filters.append('score/2')
+        filters.append('player/1')
+        filters.append('current_phase/1')
+
+
+
+
+    def __init__(self, sources, options, dependencies=[]):
 
         self.sources = []
 
@@ -95,16 +104,24 @@ class Agent:
             else:
                 raise Exception('[ASP] Unsupported operating system')
 
+
+            if len(dependencies) == 0:
+                dependencies = filters
+
+            options.append('--filter={}'.format(','.join(dependencies)))
+
+
             for option in options:
                 self.handler.add_option(OptionDescriptor(option))
 
         except Exception as e:
-            print(str(e))
+            logger.error(str(e))
 
     
     def get_objects(self):
         pass
 
+    
     def get_answer_sets(self):
 
         input_program = ASPInputProgram()
@@ -115,10 +132,13 @@ class Agent:
 
 
         program_id = self.handler.add_program(input_program)
+        
+
         answer_sets = self.handler.start_sync()
         self.handler.remove_program_from_id(program_id)
 
 
+        start = time.time()
         optimum = False
 
         if 'OPTIMUM' in answer_sets.get_answer_sets_string():
@@ -126,6 +146,10 @@ class Agent:
             optimum = True
         else:
             answer_sets = answer_sets.get_answer_sets()
+
+        end = time.time()
+
+        logger.info("[BENCH] Running {} in {}s".format(self.__class__.__name__, (end - start)))
 
         return ( answer_sets, optimum )
 
@@ -147,8 +171,6 @@ class Agent:
             for obj in answer_set.get_atoms():
                 if isinstance(obj, solution):
                     sol.append(obj)
-                elif isinstance(obj, Debug):
-                    logger.info('[DEBUG] Activated {}'.format(str(obj)))
                 else:
                     for arg in args:
                         if isinstance(obj, arg):

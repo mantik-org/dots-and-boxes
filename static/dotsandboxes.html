@@ -1,65 +1,126 @@
 <!DOCTYPE html>
 <html>
-<html lang="en">
-<meta charset="utf-8">
-<meta name="author" content="Wannes Meert">
-<meta name="description" content="Dots-and-Boxes game. Part of the Machine Learning: Project course at KU Leuven (Hendrik Blockeel, Wannes Meert).">
-<meta name="keywords" content="artificial intelligence,AI,machine learning,dots and boxes,KU Leuven">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Dots and Boxes</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link rel="stylesheet" href="dotsandboxes.css">
-</head>
-<body>
-	<div class="container">
-		<h1>Dots and Boxes</h1>
-		<div class="row">
-			<div class="col-md">
-				<div id="playing-area"></div>
-			</div>
-			<div class="col-md">
-				<div class="form-group">
-				<p>Size of game:</p>
-				<div class="input-group">
-				<div class="input-group-prepend">
-				<span class="input-group-text">Rows and Columns</span>
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="Antonino Natale, Matteo Perfidio">
+		<meta name="license" content="GPL">
+		<meta name="description" content="Dots-and-Boxes - Pencil-and-paper game for two players.">
+		<meta name="keywords" content="artificial intelligence,AI,dlv,answer set programming,dots and boxes,unical">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Dots and Boxes &ndash; AI Namp</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap" rel="stylesheet"> 
+
+		<style>
+			body {
+				background: linear-gradient(white, whitesmoke);
+			}
+			h1, h3 {
+				font-family: 'Odibee Sans', cursive;
+			}
+			svg text, svg line, svg rect {
+				transition: all 0.5s ease-in-out;
+			}
+			svg {
+				transform-origin: 0 0;
+			}
+			.player-turn {
+				background: whitesmoke;
+				padding: 1.5rem;
+				border: 1px solid lightgray;
+			}
+			#player-one, #player-two {
+				transition: all 0.5s ease-in-out;
+				border-radius: 18px;
+			}
+			#player-one.active {
+				background: #1abc9c;
+				color: white;
+			}
+			#player-two.active {
+				background: #e74c3c;
+				color: white;
+			}
+			#playing-box {
+				height: 100vh !important;
+			}
+			#options-btn {
+				position: absolute;
+				bottom: 0;
+				right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container position-relative">
+			<br>
+			<h1 class="text-center display-4">Dots and Boxes</h1>
+			<br>
+			<div class="row no-gutters justify-content-center">
+				<div class="col-12 row justify-content-center">
+					<h3 id="player-one" class="col-5 mx-2 player-turn text-center text-uppercase">Player One: 0</h3>
+					<h3 id="player-two" class="col-5 mx-2 player-turn text-center text-uppercase">Player Two: 0</h3>
 				</div>
-						<input type="number" class="form-control" id="nb-rows" value=6 min=1>
-						<input type="number" class="form-control" id="nb-cols" value=6 min=1>
+				<div class="col-12 text-center">
+					<div id="playing-box">
+						<div id="playing-area"></div>
 					</div>
 				</div>
-				<div class="form-group">
-					<p>Time limit:</p>
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text">Timelimit</span>
+				<div class="col-12">
+					<div class="form-group">
+						<a name="options"></a>
+						<p>Size of Board:</p>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text">Rows and Columns</span>
+							</div>
+							<input type="number" class="form-control" id="nb-rows" value=4 min=1 max=6>
+							<input type="number" class="form-control" id="nb-cols" value=4 min=1 max=6>
 						</div>
-						<input type="number" class="form-control" id="timelimit" value=0.5 step=0.5 min=0>
-				</div>
-				</div>
-				<div class="form-group">
-				<p>Players:</p>
-				<div class="input-group mb-3">
-				<div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Agent 1</span></div>
-				<input type="text" class="form-control" id="agent1" aria-describedby="basic-addon3">
-				</div>
-				<div class="input-group mb-3">
-				<div class="input-group-prepend"><span class="input-group-text" id="basic-addon3">Agent 2</span></div>
-				<input type="text" class="form-control" id="agent2" aria-describedby="basic-addon3">
-				</div>
-				<p>Fill in the address where an agent can be reached using WebSockets (e.g. ws://127.0.0.1:8089).
-				If a field is empty a human player is assumed.
-				</p>
-				<button type="button" class="btn btn-secondary" id="restart-btn">Restart game</button>
+					</div>
+					<div class="form-group">
+						<input type="hidden" class="form-control" id="timelimit" value=0.5 step=0.5 min=0>
+					</div>
+					<div class="form-group">
+						<p>Players:</p>
+						<div class="input-group mb-3 row no-gutters">
+							<div class="input-group-prepend col-auto">
+								<span class="input-group-text" id="basic-addon3">Player One</span>
+							</div>
+							<select id="agent1" class="col">
+								<option value="" selected>Human</option>
+								<option value="ws://127.0.0.1:8089">Artificial Intelligence</option>
+							</select>
+						</div>
+						<div class="input-group mb-3 row no-gutters">
+							<div class="input-group-prepend col-auto">
+								<span class="input-group-text" id="basic-addon3">Player Two</span>
+							</div>
+							<select id="agent2" class="col">
+								<option value="">Human</option>
+								<option value="ws://127.0.0.1:8089" selected>Artificial Intelligence</option>
+							</select>
+						</div>
+						<button type="button" class="btn btn-secondary w-100" id="restart-btn">Play</button>
+						<br>
+						<br>
+						<br>
+						<br>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="footer">
-		<small>&copy; <a href="https://dtai.cs.kuleuven.be">DTAI Research Group</a>, KU Leuven &mdash; <a href="https://github.com/wannesm/dotsandboxes">Source</a></small>
+		<div>
+			<a href="#options" class="btn btn-secondary px-5 py-3 mx-5 my-3" id="options-btn">Options &#x21E3;</a>
 		</div>
-	</div>
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="dotsandboxes.js"></script>
-</body>
+		<footer class="text-center text-secondary">
+			<small>Copyright &copy; 2021 AI Namp &ndash; <a href="https://github.com/ai-namp/dots-and-boxes">Source</a> &ndash; <a href="https://github.com/ai-namp/dots-and-boxes/blob/main/LICENSE">License</a></small>
+		</footer>
+		<br>
+		<br>
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="dotsandboxes.js"></script>
+	</body>
 </html>
 

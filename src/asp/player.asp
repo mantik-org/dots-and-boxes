@@ -44,12 +44,12 @@
 %       - First player odd number of chains, second player even number of chains.
 %
 % 1. If Grid Size is odd:
-chain_turn(opt) :- phase(1), player(2), grid_size(odd), N = Z / 2 * 2, Z != N, Z = #max { K : chain_count(K) }.
-chain_turn(opt) :- phase(1), player(1), grid_size(odd), N = Z / 2 * 2, Z == N, Z = #max { K : chain_count(K) }.
+chain_turn :- phase(1), player(2), grid_size(odd), N = Z / 2 * 2, Z != N, Z = #max { K : chain_count(K) }.
+chain_turn :- phase(1), player(1), grid_size(odd), N = Z / 2 * 2, Z == N, Z = #max { K : chain_count(K) }.
 %
 % 1. If Grid Size is even:
-chain_turn(opt) :- phase(1), player(2), grid_size(even), N = Z / 2 * 2, Z == N, Z = #max { K : chain_count(K) }.
-chain_turn(opt) :- phase(1), player(1), grid_size(even), N = Z / 2 * 2, Z != N, Z = #max { K : chain_count(K) }.
+chain_turn :- phase(1), player(2), grid_size(even), N = Z / 2 * 2, Z == N, Z = #max { K : chain_count(K) }.
+chain_turn :- phase(1), player(1), grid_size(even), N = Z / 2 * 2, Z != N, Z = #max { K : chain_count(K) }.
 %
 % Calculate if Grid Size is odd or even
 grid_size(even) :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) }, N = Z / 2 * 2, Z = X + Y, Z == N.
@@ -69,11 +69,11 @@ chain_count(Z) :- phase(1), X = #count { K : chain(K, _, _), chain_with_size(K, 
 % that share their empty line.
 % 
 % Calculate if beneficial for a chain
-double_dealing(chain, opt) :- phase(3), player(I), score(I, P), R = #max { K : rows(K) }, 
-                                                                C = #max { K : cols(K) }, P + 2 <= (R * C) / 2.
+double_dealing(chain) :- phase(3), player(I), score(I, P), score(J, L), I != J, R = #max { K : rows(K) }, 
+                                                                                C = #max { K : cols(K) }, P + 2 <= (R * C) / 2, L < (R * C) / 2.
 % Calculate if beneficial for a cycle
-double_dealing(cycle, opt) :- phase(3), player(I), score(I, P), R = #max { K : rows(K) }, 
-                                                                C = #max { K : cols(K) }, P + 4 <= (R * C) / 2.
+double_dealing(cycle) :- phase(3), player(I), score(I, P), score(J, L), I != J, R = #max { K : rows(K) }, 
+                                                                                C = #max { K : cols(K) }, P + 4 <= (R * C) / 2, L < (R * C) / 2.
 
 %%
 %% Guess, Check & Optimize
@@ -106,7 +106,7 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %                  an even number of chains and the second player an odd number of chains. 
 %
 %          If we're following in optimal way the Chain Rule then we play building long chains.
-:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 == D2, chain_turn(opt). [ 1@2, I1, J1, D1 ]
+:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 == D2, chain_turn. [ 1@2, I1, J1, D1 ]
 %          Otherwise, we try to divide long chain in smaller chain.
 :~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 != D2. [ 1@1, I1, J1, D1 ]
 %
@@ -125,7 +125,7 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %       3. Applying Double Dealing for chains, if beneficial. 
 :~ phase(3), not_step(I, J, D), valence(M1, N1, 2), valence(M2, N2, 1), in_square(I, J, D, M1, N1), not in_square(I, J, D, M2, N2), 
                                 adj_empty(_, _, _, M1, N1, M2, N2), 
-                                chain_with_size(K, 1), chain(K, M1, N1), double_dealing(chain, opt). [ 1@7, I, J, D ]
+                                chain_with_size(K, 1), chain(K, M1, N1), double_dealing(chain). [ 1@7, I, J, D ]
 %
 %       4. Applying Double Dealing for cycles, if beneficial.
 :~ phase(3), not_step(I, J, D), valence(M3, N3, 1), valence(M4, N4, 1), neq_square(M3, N3, M4, N4), 
@@ -133,7 +133,7 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
                                 adj_empty(I, J, D, M1, N1, M2, N2),
                                 adj_empty(_, _, _, M1, N1, M3, N3),
                                 adj_empty(_, _, _, M2, N2, M4, N4),
-                                chain_with_size(K, 2), chain(K, M1, N1), chain(K, M2, N2), double_dealing(cycle, opt). [ 1@6, I, J, D ]
+                                chain_with_size(K, 2), chain(K, M1, N1), chain(K, M2, N2), double_dealing(cycle). [ 1@6, I, J, D ]
 %
 %
 %   - Exception Phase.
@@ -141,15 +141,3 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %          we can fill it in.
 :~ not_step(I, J, D), valence(M, N, 1), in_square(I, J, D, M, N). [ 1@5, I, J, D ]
 
-
-
-
-
-%%
-%% Debug
-%%
-debug(phase, P, 0, 0) :- phase(P).
-debug(current_phase, P, 0, 0) :- current_phase(P).
-debug(score, I, P, 0) :- player(I), score(I, P).
-debug(double_dealing, 1, 0, 0) :- double_dealing(chain, opt).
-debug(double_dealing, 0, 0, 0) :- double_dealing(cycle, opt).

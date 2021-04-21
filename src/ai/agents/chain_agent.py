@@ -24,42 +24,35 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-from lib.embasp.languages.predicate import Predicate
+from src.ai.agents.agent import Agent
+
+from src.asp.models.drawn import Drawn
+from src.asp.models.row import Row
+from src.asp.models.column import Column
+from src.asp.models.chain import Chain
+
+from lib.embasp.platforms.desktop.desktop_handler import DesktopHandler
+from lib.embasp.specializations.dlv2.desktop.dlv2_desktop_service import DLV2DesktopService
+from lib.embasp.languages.asp.asp_mapper import ASPMapper
+from lib.embasp.languages.asp.asp_input_program import ASPInputProgram
 from lib.embasp.languages.asp.symbolic_constant import SymbolicConstant
+from lib.embasp.base.option_descriptor import OptionDescriptor
 
-class Debug(Predicate):
-    predicate_name = "debug"
+import logging
+import traceback
+import platform
 
-    def __init__(self, predicate=None, arg0=None, arg1=None, arg2=None):
-        Predicate.__init__(self, [("predicate", SymbolicConstant), ("arg0", int), ("arg1", int), ("arg2", int)])
-        self.predicate = predicate
-        self.arg0 = arg0
-        self.arg1 = arg1
-        self.arg2 = arg2
+logger = logging.getLogger('debug')
+SOURCE = 'src/asp/chain.asp'
 
-    def get_predicate(self):
-        return self.predicate
+class ChainAgent(Agent):
 
-    def set_predicate(self, predicate):
-        self.predicate = predicate
+    def __init__(self, player):
+        Agent.__init__(self, [ 'src/asp/utils.asp', SOURCE ], [ '-n0' ], [ 'chain/3', 'cycle/3' ])
+        self.player = player
 
-    def get_arg0(self):
-        return self.arg0
-
-    def set_arg0(self, arg0):
-        self.arg0 = arg0
-
-    def get_arg1(self):
-        return self.arg1
-
-    def set_arg1(self, arg1):
-        self.arg1 = arg1
-
-    def get_arg2(self):
-        return self.arg2
-
-    def set_arg2(self, arg2):
-        self.arg2 = arg2
-
-    def __str__(self):
-        return Debug.predicate_name + "(" + str(self.predicate) + "," + str(self.arg0) + "," + str(self.arg1) + "," + str(self.arg2) + ")."
+    def get_objects(self):
+        return self.player.board_objects
+    
+    def play(self):
+        pass
