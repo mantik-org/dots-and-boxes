@@ -23,7 +23,7 @@
 
   var player_color = [
     "#CFD8DC",
-    "#1abc9c",
+    "#34495e",
     "#e74c3c"
   ];
 
