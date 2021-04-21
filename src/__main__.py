@@ -26,17 +26,22 @@
 
 import logging
 import sys
+import argparse
 
 from src.core.game import Game
 
 
-def main():
+def main(argv):
+
+    parser = argparse.ArgumentParser(description='Start AI Agent for Dots and Boxes')
+    parser.add_argument('port', metavar='PORT', type=int, help='Port to use for server')
+    args = parser.parse_args(argv)
 
     logger = logging.getLogger('debug')
     logger.setLevel(logging.DEBUG)
     logger.addHandler(logging.StreamHandler(sys.stderr))
     
-    Game.getInstance().run('localhost', 8089)
+    Game.getInstance().run('localhost', args.port)
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)

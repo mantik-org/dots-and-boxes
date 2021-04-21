@@ -128,13 +128,13 @@ class Game:
 
     def run(self, host, port):
 
-        logger.info('[GAME] Running...')
+        logger.info('[GAME] Running')
         Agent.initMappings()
 
 
         self.server = websockets.serve(Game.on_network_data, host, port)
 
-        logger.info('[NETWORK] Listening...')
+        logger.info('[NETWORK] Listening on {}:{}...'.format(host, port))
         asyncio.get_event_loop().run_until_complete(self.server)
         asyncio.get_event_loop().run_forever()
 
