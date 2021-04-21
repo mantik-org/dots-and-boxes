@@ -29,4 +29,4 @@ clean:
 
 
 $(OUTPUT): src/__main__.py
-	@nuitka3 $< --follow-imports --include-package=lib.embasp --include-package=src -o $(OUTPUT)
+	@python3 -m nuitka $< --follow-imports --include-package=lib.embasp --include-package=src -o $(OUTPUT)
