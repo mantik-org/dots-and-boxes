@@ -404,6 +404,7 @@
       var address = document.getElementById('agent'+i).value;
       console.log('Address agent'+i+': '+address);
       if (address) {
+        address = window.location.origin.replace(/^http/, 'ws') + ':' + address;
         console.log("Starting websocket for agent "+i+" on address "+address);
         var agent = agents[i];
         agent.address = address;
