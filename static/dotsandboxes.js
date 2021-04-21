@@ -14,17 +14,17 @@
 
   var field_margin_x = 75;
   var field_margin_y = 50;
-  var cell_margin = 4;
+  var cell_margin = 8;
   var player_height = 40;
   var width = 600;
   var height = 550;
   var cell_width = 75;
-  var line_width = 5;
+  var line_width = 6;
 
   var player_color = [
-    "#E6E6E6",
-    "#FC6666",
-    "#0F80FF"
+    "#CFD8DC",
+    "#1abc9c",
+    "#e74c3c"
   ];
 
 
@@ -86,6 +86,7 @@
     console.log("Starting game", cur_game);
     points = [0, 0, 0];
     cur_player = 1;
+    update_players(cur_player);
     var old_length = 0;
     for (var ri=0; ri<nb_rows + 1; ri++) {
       if (ri >= data.length) {
@@ -206,6 +207,7 @@
     if (!won_cell) {
       cur_player = 3 - cur_player;
       msg.nextplayer = cur_player;
+      update_players(cur_player);
     }
     update_board();
     if (points[1] + points[2] == nb_cols * nb_rows) {
@@ -260,7 +262,7 @@
     //     });
 
     if(document.getElementById("player-one"))
-      document.getElementById("player-one").innerHTML = "Player One: " + points[1];
+      document.getElementById("player-one").innerHTML = "Player One: " + points[1];  
     if(document.getElementById("player-two"))
       document.getElementById("player-two").innerHTML = "Player Two: " + points[2];
 
@@ -486,8 +488,20 @@
   restartbtn.onclick = function() {
     console.log("Restart game");
     restart();
+    window.scrollTo(0, 0);
   };
 
   restart();
 
 });
+
+function update_players(player) {
+  if(player == 1) {
+    document.getElementById('player-one').classList.add('active');
+    document.getElementById('player-two').classList.remove('active');
+  }
+  if(player == 2) {
+    document.getElementById('player-one').classList.remove('active');
+    document.getElementById('player-two').classList.add('active');
+  }
+}

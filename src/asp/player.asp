@@ -69,11 +69,11 @@ chain_count(Z) :- phase(1), X = #count { K : chain(K, _, _), chain_with_size(K, 
 % that share their empty line.
 % 
 % Calculate if beneficial for a chain
-double_dealing(chain) :- phase(3), player(I), score(I, P), R = #max { K : rows(K) }, 
-                                                                C = #max { K : cols(K) }, P + 2 <= (R * C) / 2.
+double_dealing(chain) :- phase(3), player(I), score(I, P), score(J, L), I != J, R = #max { K : rows(K) }, 
+                                                                                C = #max { K : cols(K) }, P + 2 <= (R * C) / 2, L < (R * C) / 2.
 % Calculate if beneficial for a cycle
-double_dealing(cycle) :- phase(3), player(I), score(I, P), R = #max { K : rows(K) }, 
-                                                                C = #max { K : cols(K) }, P + 4 <= (R * C) / 2.
+double_dealing(cycle) :- phase(3), player(I), score(I, P), score(J, L), I != J, R = #max { K : rows(K) }, 
+                                                                                C = #max { K : cols(K) }, P + 4 <= (R * C) / 2, L < (R * C) / 2.
 
 %%
 %% Guess, Check & Optimize
