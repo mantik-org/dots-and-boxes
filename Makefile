@@ -15,13 +15,13 @@ run-server:
 	@python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)
 
 run-interp:
-	@python3 -OO -m src
+	@python3 -OO -m src $(AGENT_PORT)
 
 build: $(OUTPUT)
 
 run: build
 	@chmod +x $(OUTPUT)
-	@./$(OUTPUT)
+	@./$(OUTPUT) $(AGENT_PORT)
 
 clean:
 	@$(RM) -f $(OUTPUT)
