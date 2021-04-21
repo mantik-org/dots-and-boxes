@@ -33,7 +33,7 @@ make run
 Open your web browser on http://localhost:8080 after successful build.
 
 
-## Third-Party Software:
+## Third-Party Software
 Dots And Boxes uses and depends on third-party open-source tools and libraries which are outside of this repository.
 ## License
 
