@@ -10,7 +10,7 @@ The game starts with an empty grid of dots. Usually two players take turns addin
 ![Screenshot](/docs/images/screen01.png)
 
 ## Sources
-In this project, artificial intelligence was supported by [DLV](https://dlv.demacs.unical.it/).
+In this project, artificial intelligence was supported by [DLV](https://dlv.demacs.unical.it/).  
 DLV is an Answer Set Programming system, based on disjunctive logic programming, which offers front-ends to several advanced KR formalisms. The system supports a language based on a logical formalisms with a very high expressive power so that programs are able to represent relevant practical problems in presence of incomplete or contradictory knowledge.  
 
 Notable sources are:
@@ -32,6 +32,9 @@ make run
 ## Run
 Open your web browser on http://localhost:8080 after successful build.
 
+
+## Third-Party Software:
+Dots And Boxes uses and depends on third-party open-source tools and libraries which are outside of this repository.
 ## License
 
 Copyright (c) AI Namp. All rights reserved.
