@@ -52,8 +52,8 @@ chain_turn :- phase(1), player(2), grid_size(even), N = Z / 2 * 2, Z == N, Z = #
 chain_turn :- phase(1), player(1), grid_size(even), N = Z / 2 * 2, Z != N, Z = #max { K : chain_count(K) }.
 %
 % Calculate if Grid Size is odd or even
-grid_size(even) :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) }, N = Z / 2 * 2, Z = X + Y, Z == N.
-grid_size(odd)  :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) }, N = Z / 2 * 2, Z = X + Y, Z != N.
+grid_size(even) :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) }, Z = (X + 1) * (Y + 1), N = Z / 2 * 2, Z == N.
+grid_size(odd)  :- phase(1), X = #max { H : rows(H) }, Y = #max { H : cols(H) }, Z = (X + 1) * (Y + 1), N = Z / 2 * 2, Z != N.
 %
 % Calculate number of chains and cycles inside the current board state.
 chain_count(Z) :- phase(1), X = #count { K : chain(K, _, _), chain_with_size(K, S), S > 2 }, Y = #count { K : cycle(K, _, _) }, Z = X + Y.
@@ -106,9 +106,9 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %                  an even number of chains and the second player an odd number of chains. 
 %
 %          If we're following in optimal way the Chain Rule then we play building long chains.
-:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 == D2, chain_turn. [ 1@2, I1, J1, D1 ]
+:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 != D2, chain_turn. [ 1@2, I1, J1, D1 ]
 %          Otherwise, we try to divide long chain in smaller chain.
-:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 != D2. [ 1@1, I1, J1, D1 ]
+:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 == D2. [ 1@1, I1, J1, D1 ]
 %
 %          In this way, the player who took the last turn is the one who get the control of the match 
 %          and the one who forced his opponent to first move into a chain or cycle.
