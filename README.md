@@ -13,7 +13,7 @@ The game starts with an empty grid of dots. Usually two players take turns addin
 
 ## Sources
 In this project, artificial intelligence was supported by [DLV](https://dlv.demacs.unical.it/).  
-DLV is an **Answer Set Programming** system, based on *disjunctive logic programming*, which offers front-ends to several advanced KR formalisms. The system supports a language based on a logical formalisms with a very high expressive power so that programs are able to represent relevant practical problems in presence of incomplete or contradictory knowledge.  
+**DLV** is an **Answer Set Programming** system, based on *disjunctive logic programming*, which offers front-ends to several advanced KR formalisms. The system supports a language based on a logical formalisms with a very high expressive power so that programs are able to represent relevant practical problems in presence of incomplete or contradictory knowledge.  
 
 Notable sources are:
 - **Player Agent**, [asp/player.asp](https://github.com/ai-namp/dots-and-boxes/blob/main/src/asp/player.asp) AI for calculate next move to get best score.
