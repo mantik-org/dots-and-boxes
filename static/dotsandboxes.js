@@ -223,6 +223,38 @@
       msg.type = "end";
       msg.nextplayer = 0;
       msg.winner = winner;
+
+      var msg = null;
+      var title = null;
+
+      if(winner == 0) {
+        msg = "The match ended in a draw!";
+      } else {
+        msg = "Player " + winner + " win the match!";
+      }
+
+      window.setTimeout(() => {
+        Swal.fire({
+          title: '',
+          html:
+            `<div class="text-center">
+              <img src="win.webp" height="192" alt="" class="animate__animated animate__flip">
+            </div>
+            <br>
+            <h3><b>${msg}</h3></p>
+            `,
+          showCloseButton: true,
+          showCancelButton: false,
+          focusConfirm: true,
+          confirmButtonText: 'Restart!',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            restart()
+          }
+        })
+      }, 750);
+
+
     }
     send_to_agents(msg);
   }
@@ -429,9 +461,6 @@
           iagent.socket.onclose = function(event) {
             console.log("Closing connection to agent "+ii);
           };
-          iagent.socket.onerror = function(event) {
-            console.log("Error on connection to agent "+ii, event);
-          };
           msg = {
             "type": "start",
             "player": ii,
@@ -441,6 +470,29 @@
           };
           iagent.socket.send(JSON.stringify(msg));
         };}(i, agent));
+
+        agent.socket.onerror = function(event) {
+          Swal.fire( {
+            title: 'Connection error',
+            html: `
+              You need to setup the <b>AI</b> on your local machine.
+              <br>
+              <br>
+              <small>
+                <div class="text-left px-3">
+                  <hr>
+                  <p class="mb-1">Open your terminal and type:</p>
+                  <code>$ <b>git</b> clone <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes"><u>https://github.com/ai-namp/dots-and-boxes</u></a></code><br>
+                  <code>$ <b>cd</b> dots-and-boxes</code><br>
+                  <code>$ <b>make</b> run-interp</code><br>
+                  <hr>
+                </div>
+                <br>
+                See <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes">README.md</a> on repository page for more information.
+              </small>`,
+            icon: 'error'
+          });
+        };
       }
     }
   }

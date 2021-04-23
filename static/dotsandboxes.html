@@ -8,19 +8,35 @@
 		<meta name="keywords" content="artificial intelligence,AI,dlv,answer set programming,dots and boxes,unical">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>Dots and Boxes &ndash; AI Namp</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Odibee+Sans&display=swap" rel="stylesheet"> 
 
 		<style>
+			html {
+  				scroll-behavior: smooth;
+			}
 			body {
 				background: linear-gradient(white, whitesmoke);
 			}
-			h1, h3 {
+			h1, h3, .btn {
 				font-family: 'Odibee Sans', cursive;
 			}
+			.btn {
+				font-size: x-large;
+			}
+			.swal2-confirm {
+				background: var(--secondary) !important;
+			}
 			svg text, svg line, svg rect {
-				transition: all 0.5s ease-in-out;
+				animation: bounce;
+				animation-duration: 1s;
+				transition: all .3s ease-in-out;
+			}
+			svg line[stroke="#34495e"], svg line[stroke="#e74c3c"] {
+				animation: jackInTheBox;
+				animation-duration: .75s;
 			}
 			svg {
 				transform-origin: 0 0;
@@ -55,12 +71,12 @@
 	<body>
 		<div class="container position-relative">
 			<br>
-			<h1 class="text-center display-4">Dots and Boxes</h1>
+			<h1 class="text-center display-4 animate__animated animate__backInDown">Dots and Boxes</h1>
 			<br>
 			<div class="row no-gutters justify-content-center">
 				<div class="col-12 row justify-content-center">
-					<h3 id="player-one" class="col-5 mx-2 player-turn text-center text-uppercase">Player One: 0</h3>
-					<h3 id="player-two" class="col-5 mx-2 player-turn text-center text-uppercase">Player Two: 0</h3>
+					<h3 id="player-one" class="col-5 mx-2 player-turn text-center text-uppercase animate__animated animate__backInLeft">Player One: 0</h3>
+					<h3 id="player-two" class="col-5 mx-2 player-turn text-center text-uppercase animate__animated animate__backInRight">Player Two: 0</h3>
 				</div>
 				<div class="col-12 text-center">
 					<div id="playing-box">
@@ -112,13 +128,19 @@
 			</div>
 		</div>
 		<div>
-			<a href="#options" class="btn btn-secondary px-5 py-3 mx-5 my-3" id="options-btn">Options &#x21E3;</a>
+			<a href="#options" class="btn btn-secondary px-5 py-3 mx-5 my-3" id="options-btn">
+				Options
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24" style="fill: white">
+					<path d="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z" />
+				</svg>
+			</a>
 		</div>
 		<footer class="text-center text-secondary">
-			<small>Copyright &copy; 2021 AI Namp &ndash; <a href="https://github.com/ai-namp/dots-and-boxes">Source</a> &ndash; <a href="https://github.com/ai-namp/dots-and-boxes/blob/main/LICENSE">License</a></small>
+			<small>Copyright &copy; 2021 AI Namp &ndash; <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes">Source</a> &ndash; <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes/blob/main/LICENSE">License</a></small>
 		</footer>
 		<br>
 		<br>
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 		<script src="https://d3js.org/d3.v4.min.js"></script>
 		<script src="dotsandboxes.js"></script>
 	</body>

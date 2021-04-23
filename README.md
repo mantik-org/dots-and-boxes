@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/ai-namp/dots-and-boxes.svg?branch=main)](https://travis-ci.com/ai-namp/dots-and-boxes)
 [![License: GPL](https://img.shields.io/badge/License-GPL-blue.svg)](/LICENSE) 
 
-:game_die: **Online demo**: [HERE](https://dots-and-boxes-ai-namp.herokuapp.com/)  
+:game_die: **Online preview**: [HERE](https://dots-and-boxes-ai-namp.herokuapp.com/)  
 
 Pencil-and-paper game for two players.  
 
@@ -26,14 +26,19 @@ Notable sources are:
 To run Dots And Boxes, execute the following command:
 ```shell script
 make init
-make run-server &
+make run-server & 
 make run
 ```
-**NOTE:** Building and running require [Python 3.x.x](https://www.python.org/) or greater.
+**NOTE:** Building and running require [Python 3.x.x](https://www.python.org/) or greater.  
 
 ## Run
 Open your web browser on http://localhost:8080 after successful build.
 
+## Preview
+Online preview [HERE](https://dots-and-boxes-ai-namp.herokuapp.com/) requires at least AI Agent running on your local machine:
+```
+make run
+```
 
 ## Third-Party Software
 Dots And Boxes uses and depends on third-party open-source tools and libraries which are outside of this repository.
