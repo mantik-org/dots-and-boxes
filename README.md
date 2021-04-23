@@ -34,12 +34,6 @@ make run
 ## Run
 Open your web browser on http://localhost:8080 after successful build.
 
-## Preview
-Online preview [HERE](https://dots-and-boxes-ai-namp.herokuapp.com/) requires at least AI Agent running on your local machine:
-```
-make run
-```
-
 ## Third-Party Software
 Dots And Boxes uses and depends on third-party open-source tools and libraries which are outside of this repository.
 ## License
