@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/ai-namp/dots-and-boxes.svg?branch=main)](https://travis-ci.com/ai-namp/dots-and-boxes)
 [![License: GPL](https://img.shields.io/badge/License-GPL-blue.svg)](/LICENSE) 
 
-:game_die: **Online preview**: <a href="https://dots-and-boxes-ai-namp.herokuapp.com/" target="_blank">HERE</a>  
+:game_die: **Online preview**: [HERE](https://dots-and-boxes-ai-namp.herokuapp.com/)  
 
 Pencil-and-paper game for two players.  
 
