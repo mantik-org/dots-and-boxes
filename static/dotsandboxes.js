@@ -436,8 +436,12 @@
       var address = document.getElementById('agent'+i).value;
       console.log('Address agent'+i+': '+address);
       if (address === 'ai') {
-        //address = window.location.origin.replace(/^http/, 'ws');
-        address = 'wss://dots-and-boxes-ai-namp-agent.herokuapp.com';
+
+        if(window.location.origin.includes("dots-and-boxes-ai-namp"))
+          address = 'wss://dots-and-boxes-ai-namp-agent.herokuapp.com';
+        else
+          address = "ws://localhost:8089"
+
         console.log("Starting websocket for agent "+i+" on address "+address);
         var agent = agents[i];
         agent.address = address;
@@ -471,24 +475,17 @@
           iagent.socket.send(JSON.stringify(msg));
         };}(i, agent));
 
+       
+
         agent.socket.onerror = function(event) {
           Swal.fire( {
             title: 'Connection error',
             html: `
-              You need to setup the <b>AI</b> on your local machine.
+              Sorry, we could not establish connection to <b>AI</b>.
               <br>
               <br>
               <small>
-                <div class="text-left px-3">
-                  <hr>
-                  <p class="mb-1">Open your terminal and type:</p>
-                  <code>$ <b>git</b> clone <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes"><u>https://github.com/ai-namp/dots-and-boxes</u></a></code><br>
-                  <code>$ <b>cd</b> dots-and-boxes</code><br>
-                  <code>$ <b>make</b> run-interp</code><br>
-                  <hr>
-                </div>
-                <br>
-                See <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes">README.md</a> on repository page for more information.
+                If problem persists, please contact an administrator or open an issue on <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes">GitHub</a> page for more support.
               </small>`,
             icon: 'error'
           });
