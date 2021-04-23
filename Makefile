@@ -15,7 +15,7 @@ run-server:
 	@python3 $(RMTDIR)/dotsandboxesserver.py $(PORT)
 
 run-interp:
-	@python3 -OO -m src $(AGENT_PORT)
+	@python3 -OO -m src $(PORT)
 
 build: $(OUTPUT)
 
