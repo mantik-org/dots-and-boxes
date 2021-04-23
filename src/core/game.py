@@ -132,7 +132,7 @@ class Game:
         Agent.initMappings()
 
 
-        self.server = websockets.serve(Game.on_network_data, host, port)
+        self.server = websockets.serve(Game.on_network_data, port=port)
 
         logger.info('[NETWORK] Listening on {}:{}...'.format(host, port))
         asyncio.get_event_loop().run_until_complete(self.server)
