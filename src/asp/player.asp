@@ -84,7 +84,7 @@ instances(I, J, D) :- drawn(I, J, D).
 %
 % 2. Guess
 %   - Calculate all possibile steps for the next turn excluding lines already drawn.
-step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
+step(I, J, D) | not_step(I, J, D) :- edge(I, J, D), not instances(I, J, D).
 %
 % 3. Check
 %   - Only one solution is allowed.
@@ -106,9 +106,9 @@ step(I, J, D) | not_step(I, J, D) :- grid(I, J, D), not instances(I, J, D).
 %                  an even number of chains and the second player an odd number of chains. 
 %
 %          If we're following in optimal way the Chain Rule then we play building long chains.
-:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 != D2, chain_turn. [ 1@2, I1, J1, D1 ]
+:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_edge(I1, J1, D1, I2, J2, D2), D1 != D2, chain_turn. [ 1@2, I1, J1, D1 ]
 %          Otherwise, we try to divide long chain in smaller chain.
-:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_grid(I1, J1, D1, I2, J2, D2), D1 == D2. [ 1@1, I1, J1, D1 ]
+:~ phase(1), not_step(I1, J1, D1), drawn(I2, J2, D2), adj_edge(I1, J1, D1, I2, J2, D2), D1 == D2. [ 1@1, I1, J1, D1 ]
 %
 %          In this way, the player who took the last turn is the one who get the control of the match 
 %          and the one who forced his opponent to first move into a chain or cycle.

@@ -32,8 +32,8 @@
 % Lines
 %   A connection between two dots. A line that has not yet been drawn is 
 %   deﬁned as being ”empty”.
-grid(I, J, v) :- rows(I), cols(J), L = #max{ H : rows(H) }, I <= L - 1.
-grid(I, J, h) :- rows(I), cols(J), L = #max{ H : cols(H) }, J <= L - 1.
+edge(I, J, v) :- rows(I), cols(J), L = #max{ H : rows(H) }, I <= L - 1.
+edge(I, J, h) :- rows(I), cols(J), L = #max{ H : cols(H) }, J <= L - 1.
 %
 %
 % Boxes
@@ -51,9 +51,9 @@ valence(I, J, Q) :- square(I, J), A = #count { I, J, D : drawn(I, J, D)     },
 %
 %
 %  Check if a SQUARE contains LINE.
-in_square(I, J, D, M, N) :- grid(I, J, D), square(M, N), I = M, J = N.
-in_square(I, J, h, M, N) :- grid(I, J, h), square(M, N), I = M + 1, J = N.
-in_square(I, J, v, M, N) :- grid(I, J, v), square(M, N), I = M, J = N + 1.
+in_square(I, J, D, M, N) :- edge(I, J, D), square(M, N), I = M, J = N.
+in_square(I, J, h, M, N) :- edge(I, J, h), square(M, N), I = M + 1, J = N.
+in_square(I, J, v, M, N) :- edge(I, J, v), square(M, N), I = M, J = N + 1.
 %
 % Check if two SQUARE are adjacent or that SQUARE_A and SQUARE_B share at least one line.
 adj_square(I, J, M, N) :- square(I, J), square(M, N), I = M + 1, J = N.
@@ -62,30 +62,41 @@ adj_square(I, J, M, N) :- square(I, J), square(M, N), I = M, J = N + 1.
 adj_square(I, J, M, N) :- square(I, J), square(M, N), I = M, J = N - 1.
 %
 % Check if two LINE are adjacent or that LINE_A and LINE_B share at least one dots.
-adj_grid(I1, J1, v, I2, J2, v) :- grid(I1, J1, v), grid(I2, J2, v), I1 = I2 - 1, J1 = J2.
-adj_grid(I1, J1, v, I2, J2, v) :- grid(I1, J1, v), grid(I2, J2, v), I1 = I2 + 1, J1 = J2.
-adj_grid(I1, J1, h, I2, J2, h) :- grid(I1, J1, h), grid(I2, J2, h), I1 = I2, J1 = J2 - 1.
-adj_grid(I1, J1, h, I2, J2, h) :- grid(I1, J1, h), grid(I2, J2, h), I1 = I2, J1 = J2 + 1.
-adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2, J1 = J2.
-adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2, J1 = J2 + 1.
-adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2 - 1, J1 = J2.
-adj_grid(I1, J1, v, I2, J2, h) :- grid(I1, J1, v), grid(I2, J2, h), I1 = I2 - 1, J1 = J2 + 1.
-adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2, J1 = J2.
-adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2, J1 = J2 - 1.
-adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2.
-adj_grid(I1, J1, h, I2, J2, v) :- grid(I1, J1, h), grid(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
+adj_edge(I1, J1, v, I2, J2, v) :- edge(I1, J1, v), edge(I2, J2, v), I1 = I2 - 1, J1 = J2.
+adj_edge(I1, J1, v, I2, J2, v) :- edge(I1, J1, v), edge(I2, J2, v), I1 = I2 + 1, J1 = J2.
+adj_edge(I1, J1, h, I2, J2, h) :- edge(I1, J1, h), edge(I2, J2, h), I1 = I2, J1 = J2 - 1.
+adj_edge(I1, J1, h, I2, J2, h) :- edge(I1, J1, h), edge(I2, J2, h), I1 = I2, J1 = J2 + 1.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2, J1 = J2.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2, J1 = J2 + 1.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2 - 1, J1 = J2.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2 - 1, J1 = J2 + 1.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2, J1 = J2.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2, J1 = J2 - 1.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2 + 1, J1 = J2.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
 %
 %
 % Check if two SQUARE are not equal.
 neq_square(I, J, M, N) :- square(I, J), square(M, N), I + J != M + N, I - J != M - N.
 %
 % Check if two SQUARE shares same empty line.
-adj_empty(I, J, D, M1, N1, M2, N2) :- grid(I, J, D), square(M1, N1), square(M2, N2), in_square(I, J, D, M1, N1), in_square(I, J, D, M2, N2), not drawn(I, J, D).
+adj_empty(I, J, D, M1, N1, M2, N2) :- edge(I, J, D), square(M1, N1), square(M2, N2), in_square(I, J, D, M1, N1), in_square(I, J, D, M2, N2), not drawn(I, J, D).
 %
 %
 %
-% Calculate size for each chain.
-% N.B: chains and cycle are calculated by chain.asp
+% Calculate size for each chain.k if two LINE are adjacent or that LINE_A and LINE_B share at least one dots.
+adj_edge(I1, J1, v, I2, J2, v) :- edge(I1, J1, v), edge(I2, J2, v), I1 = I2 - 1, J1 = J2.
+adj_edge(I1, J1, v, I2, J2, v) :- edge(I1, J1, v), edge(I2, J2, v), I1 = I2 + 1, J1 = J2.
+adj_edge(I1, J1, h, I2, J2, h) :- edge(I1, J1, h), edge(I2, J2, h), I1 = I2, J1 = J2 - 1.
+adj_edge(I1, J1, h, I2, J2, h) :- edge(I1, J1, h), edge(I2, J2, h), I1 = I2, J1 = J2 + 1.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2, J1 = J2.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2, J1 = J2 + 1.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2 - 1, J1 = J2.
+adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2 - 1, J1 = J2 + 1.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2, J1 = J2.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2, J1 = J2 - 1.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2 + 1, J1 = J2.
+adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
 chain_with_size(P, S) :- chain(P, _, _), S = #count { P, I, J : chain(P, I, J) }.
 % Calculate size for each cycle.
 cycle_with_size(P, S) :- cycle(P, _, _), S = #count { P, I, J : cycle(P, I, J) }.
