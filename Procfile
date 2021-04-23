@@ -1,1 +1,1 @@
-web: make init && make run
+web: make init && make run-interp
