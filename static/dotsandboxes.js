@@ -8,18 +8,17 @@
  **/
 
 
- document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
 
   var container = document.getElementById('playing-area');
 
-  var field_margin_x = 75;
-  var field_margin_y = 50;
+  
   var cell_margin = 8;
   var player_height = 40;
-  var width = 600;
-  var height = 550;
-  var cell_width = 75;
+  var cell_width = Math.min(75, window.innerWidth / 6.5);
   var line_width = 6;
+
+  console.debug("Game initialized: ", cell_margin, player_height, cell_width, line_width);
 
   var player_color = [
     "#CFD8DC",
@@ -57,12 +56,12 @@
     cur_game = generateGuid();
     alertstring = "";
     nb_cols = parseInt(document.getElementById('nb-cols').value);
-    if (nb_cols == "" || isNaN(nb_cols) || nb_cols < 1) {
+    if (nb_cols == "" || isNaN(nb_cols) || nb_cols < 2 || nb_cols > 6) {
       nb_cols = 6;
       alertstring += "Invalid number of columns, the default value of " + nb_cols.toString() + " is applied. ";
     }
     nb_rows = parseInt(document.getElementById('nb-rows').value);
-    if (nb_rows == "" || isNaN(nb_rows) || nb_rows < 1) {
+    if (nb_rows == "" || isNaN(nb_rows) || nb_rows < 2 || nb_rows > 6) {
       nb_rows = 6;
       alertstring += "Invalid number of rows, the default value of " + nb_rows.toString() + " is applied. ";
 
@@ -73,14 +72,12 @@
       alertstring += "Invalid time limit, the default value of " + timelimit.toString() + " is applied. ";
     }
     if (alertstring != ""){
-      alert(alertstring);
+      console.warn(alertstring);
     }
 
-    if(document.getElementById("svg-board")) {
-      var scale = 2 - (Math.min(nb_rows, nb_cols) * width) / (6 * width);
-      console.log(scale);
-      document.getElementById("svg-board").style.transform = "scale(" + scale.toFixed(2) + ", " + scale.toFixed(2) + ")"; 
-    }
+    document.getElementById('nb-cols').value = nb_cols;
+    document.getElementById('nb-rows').value = nb_rows;
+
 
     cur_ended = false;
     console.log("Starting game", cur_game);
@@ -259,24 +256,58 @@
     send_to_agents(msg);
   }
 
+
+  var player;
+  var field;
+  var svg;
   
-  var svg = d3.select("#playing-area").append("svg")
-    .attr("id", "svg-board")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate("+field_margin_x+","+field_margin_y+")");
+  function init_board() {
 
-  var player = svg.append("g")
-    .attr("class", "player")
-    .attr("transform", "translate(0,10)");
+    $("#playing-area").children().remove();
 
-  var field = svg.append("g")
-    .attr("class", "field")
-    .attr("transform", "translate(0,"+player_height+")");
+    var board_cur_height = (cell_width + line_width) * nb_rows;
+    var board_cur_width = (cell_width + line_width) * nb_cols;
+    var board_max_width = (cell_width + line_width) * 6;
 
+    var scale = board_max_width / Math.min(board_cur_width, board_cur_height) * 0.85;
+
+    var width = Math.min(cell_width * nb_cols + line_width, window.innerWidth);
+    var height = Math.min(cell_width * nb_rows + line_width + player_height, window.innerHeight);
+
+
+    svg = d3.select("#playing-area").append("svg")
+      .attr("id", "svg-board")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+
+    player = svg.append("g")
+      .attr("class", "player")
+      .attr("transform", "translate(0,10)");
+
+    field = svg.append("g")
+      .attr("class", "field")
+      .attr("transform", `translate(${line_width / 2}, ${player_height})`);
+
+
+    var field_margin_x = Math.max(0, (window.innerWidth / 2) - $("#svg-board").position().left - ((board_cur_width * scale) / 2) + cell_margin);
+    var field_margin_y = 50;
+  
+    $("#svg-board").css({ 
+      'transform' : `translate(${field_margin_x}px, ${field_margin_y}px) 
+                     scale(${scale.toFixed(2)}, ${scale.toFixed(2)})
+                    ` 
+    });
+
+    console.log("MARGIN ", field_margin_x, scale, cell_width * nb_cols);
+
+  }
+  
 
   function update_board() {
+
+    
+
     // PLAYERS - enter & update
     var player_text = player.selectAll("text")
       .data([cur_player, cur_player]);
@@ -531,6 +562,7 @@
 
   function restart() {
     restart_game();
+    init_board();
     update_board();
     start_connections();
   }
