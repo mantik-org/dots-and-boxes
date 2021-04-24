@@ -21,11 +21,20 @@ logger = logging.getLogger(__name__)
 
 class RequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
+
         if self.path == "/":
             self.send_response(302)
             self.send_header("Location", "/static/dotsandboxes.html")
             self.end_headers()
+
+        elif self.path == "/favicon.ico":
+            self.send_response(302)
+            self.send_header("Location", "/static/favicon.ico")
+            self.end_headers()
+
         return super().do_GET()
+
+        
 
     def do_PUT(self):
         response = {
