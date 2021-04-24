@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var board_cur_width = (cell_width + line_width) * nb_cols;
     var board_max_width = (cell_width + line_width) * 6;
 
-    var scale = board_max_width / Math.min(board_cur_width, board_cur_height) * 0.85;
+    var scale = board_max_width / Math.max(board_cur_width, board_cur_height) * 0.85;
 
     var width = Math.min(cell_width * nb_cols + line_width, window.innerWidth);
     var height = Math.min(cell_width * nb_rows + line_width + player_height, window.innerHeight);
