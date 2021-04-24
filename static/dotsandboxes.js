@@ -569,12 +569,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var restartbtn = document.getElementById("restart-btn");
   restartbtn.onclick = function() {
-    console.log("Restart game");
     restart();
     window.scrollTo(0, 0);
   };
 
-  restart();
+  window.setTimeout(() => restartbtn.click(), 1000);
 
 });
 
