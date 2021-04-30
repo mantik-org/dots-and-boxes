@@ -39,7 +39,7 @@ Open your web browser on http://localhost:8080 after successful build.
 Dots And Boxes uses and depends on third-party open-source tools and libraries which are outside of this repository.
 ## License
 
-Copyright (c) AI Namp. All rights reserved.
+Copyright (c) Mantik. All rights reserved.
 
 Licensed under the [GPL-3.0](/LICENSE) license.
 

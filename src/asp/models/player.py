@@ -6,7 +6,7 @@
 #      Matteo Perfidio <prfmtt98e07f537p@studenti.unical.it>
 # 
 # 
-# Copyright (C) 2021 AI Namp
+# Copyright (C) 2021 Mantik
 #
 # This file is part of DotsAndBoxesAI.  
 # 
