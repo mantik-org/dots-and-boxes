@@ -482,13 +482,13 @@
                 <div class="text-left px-3">
                   <hr>
                   <p class="mb-1">Open your terminal and type:</p>
-                  <code>$ <b>git</b> clone <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes"><u>https://github.com/ai-namp/dots-and-boxes</u></a></code><br>
+                  <code>$ <b>git</b> clone <a target="_blank" href="https://github.com/mantik-org/dots-and-boxes"><u>https://github.com/mantik-org/dots-and-boxes</u></a></code><br>
                   <code>$ <b>cd</b> dots-and-boxes</code><br>
                   <code>$ <b>make</b> run-interp</code><br>
                   <hr>
                 </div>
                 <br>
-                See <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes">README.md</a> on repository page for more information.
+                See <a target="_blank" href="https://github.com/mantik-org/dots-and-boxes">README.md</a> on repository page for more information.
               </small>`,
             icon: 'error'
           });
