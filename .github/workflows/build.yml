@@ -1,0 +1,61 @@
+
+name: build
+
+on:
+  push:
+    tags: [ "v*" ]
+
+jobs:
+  build_linux:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+        
+    - name: Install dependencies
+      run: python -m pip install --upgrade pip
+      
+    - name: Build
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: make init && make HOST=linux dist
+      
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+          ${{github.workspace}}/dots-and-boxes-*.tar.xz
+
+
+  build_osx:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+        
+    - name: Install dependencies
+      run: python -m pip install --upgrade pip
+      
+    - name: Build
+      working-directory: ${{github.workspace}}
+      shell: bash
+      run: make init && make HOST=macos dist
+      
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+          ${{github.workspace}}/dots-and-boxes-*.tar.xz
+    
