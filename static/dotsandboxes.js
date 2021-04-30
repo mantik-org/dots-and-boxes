@@ -468,8 +468,8 @@ document.addEventListener("DOMContentLoaded", function() {
       console.log('Address agent'+i+': '+address);
       if (address === 'ai') {
 
-        if(window.location.origin.includes("dots-and-boxes-ai-namp"))
-          address = 'wss://dots-and-boxes-ai-namp-agent.herokuapp.com';
+        if(window.location.origin.includes("dots-and-boxes-mantik"))
+          address = 'wss://dots-and-boxes-mantik-ai.herokuapp.com';
         else
           address = "ws://localhost:8089"
 
@@ -516,7 +516,7 @@ document.addEventListener("DOMContentLoaded", function() {
               <br>
               <br>
               <small>
-                If problem persists, please contact an administrator or open an issue on <a target="_blank" href="https://github.com/ai-namp/dots-and-boxes">GitHub</a> page for more support.
+                If problem persists, please contact an administrator or open an issue on <a target="_blank" href="https://github.com/mantik-org/dots-and-boxes">GitHub</a> page for more support.
               </small>`,
             icon: 'error'
           });
