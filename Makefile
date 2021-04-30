@@ -27,6 +27,13 @@ clean:
 	@$(RM) -f $(OUTPUT)
 	@$(RM) -rf __main__.build
 
+dist: build
+	@strip -s $(OUTPUT)
+	@tar -cJf dots-and-boxes-$(HOST)-latest.tar.xz $(OUTPUT) LICENSE README.md
+
+distclean: clean
+	@$(RM) -f dots-and-boxes-*-latest.tar.xz
+
 
 $(OUTPUT): src/__main__.py
 	@python3 -m nuitka $< --follow-imports --include-package=lib.embasp --include-package=src -o $(OUTPUT)
