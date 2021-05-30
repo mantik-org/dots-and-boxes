@@ -49,7 +49,7 @@ chained(I, J, M, N) :- chained(I, J, Z1, Z2), chain_path(Z1, Z2, M, N).
 %   - Only valid chain paths are allowed.
 :- in_chain(I, J), in_chain(M, N), not chained(I, J, M, N).
 %
-%   - Two boxes which make a path and one of them is out of solution, are not allowed.
+%   - If two boxes make a path, one of them is not allowed out of solution.
 :- in_chain(I, J), out_chain(M, N), chain_path(I, J, M, N).
 %
 %
