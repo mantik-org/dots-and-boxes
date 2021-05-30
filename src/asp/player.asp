@@ -6,7 +6,7 @@
 %%      Matteo Perfidio <prfmtt98e07f537p@studenti.unical.it>
 %% 
 %% 
-%% Copyright (C) 2021 AI Namp
+%% Copyright (C) 2021 Mantik
 %%
 %% This file is part of DotsAndBoxesAI.  
 %% 
@@ -75,6 +75,9 @@ double_dealing(chain) :- phase(3), player(I), score(I, P), score(J, L), I != J, 
 double_dealing(cycle) :- phase(3), player(I), score(I, P), score(J, L), I != J, R = #max { K : rows(K) }, 
                                                                                 C = #max { K : cols(K) }, P + 4 <= (R * C) / 2, L < (R * C) / 2.
 
+
+
+
 %%
 %% Guess, Check & Optimize
 %%
@@ -117,7 +120,7 @@ step(I, J, D) | not_step(I, J, D) :- edge(I, J, D), not instances(I, J, D).
 %   - Phase 2 / 3 - Short Chain Phase / Final Phase.
 %       1. Give away the shortest chains or cycle first to tie or get as many boxes as possible 
 %          during the short chain phase. 
-:~ phase(Z), Z > 1, not_step(I, J, D), chain_and_cycle_with_size(P, S), chain_and_cycle(P, M, N), in_square(I, J, D, M, N), S = #min { K, Q : chain_and_cycle_with_size(Q, K) }. [ 1@1, I, J, D ] 
+:~ phase(Z), Z > 1, not_step(I, J, D), chain_and_cycle_with_size(P, S), chain_and_cycle(P, M, N), in_square(I, J, D, M, N), S = #min { K, Q : chain_and_cycle_with_size(Q, K) }. [ 1@4, I, J, D ] 
 %
 %       2. Give away all double crosses.
 :~ phase(3), not_step(I, J, D), valence(M1, N1, 1), valence(M2, N2, 1), neq_square(M1, N1, M2, N2), adj_empty(I, J, D, M1, N1, M2, N2). [ 1@8, I, J, D ]

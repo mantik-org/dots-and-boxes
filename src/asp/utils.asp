@@ -6,7 +6,7 @@
 %%      Matteo Perfidio <prfmtt98e07f537p@studenti.unical.it>
 %% 
 %% 
-%% Copyright (C) 2021 AI Namp
+%% Copyright (C) 2021 Mantik
 %%
 %% This file is part of DotsAndBoxesAI.  
 %% 
@@ -29,7 +29,7 @@
 %% Utils Rules
 %%
 %
-% Lines
+% Edges
 %   A connection between two dots. A line that has not yet been drawn is 
 %   deﬁned as being ”empty”.
 edge(I, J, v) :- rows(I), cols(J), L = #max{ H : rows(H) }, I <= L - 1.
@@ -84,19 +84,7 @@ adj_empty(I, J, D, M1, N1, M2, N2) :- edge(I, J, D), square(M1, N1), square(M2, 
 %
 %
 %
-% Calculate size for each chain.k if two LINE are adjacent or that LINE_A and LINE_B share at least one dots.
-adj_edge(I1, J1, v, I2, J2, v) :- edge(I1, J1, v), edge(I2, J2, v), I1 = I2 - 1, J1 = J2.
-adj_edge(I1, J1, v, I2, J2, v) :- edge(I1, J1, v), edge(I2, J2, v), I1 = I2 + 1, J1 = J2.
-adj_edge(I1, J1, h, I2, J2, h) :- edge(I1, J1, h), edge(I2, J2, h), I1 = I2, J1 = J2 - 1.
-adj_edge(I1, J1, h, I2, J2, h) :- edge(I1, J1, h), edge(I2, J2, h), I1 = I2, J1 = J2 + 1.
-adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2, J1 = J2.
-adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2, J1 = J2 + 1.
-adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2 - 1, J1 = J2.
-adj_edge(I1, J1, v, I2, J2, h) :- edge(I1, J1, v), edge(I2, J2, h), I1 = I2 - 1, J1 = J2 + 1.
-adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2, J1 = J2.
-adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2, J1 = J2 - 1.
-adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2 + 1, J1 = J2.
-adj_edge(I1, J1, h, I2, J2, v) :- edge(I1, J1, h), edge(I2, J2, v), I1 = I2 + 1, J1 = J2 - 1.
+% Calculate size for each chain.
 chain_with_size(P, S) :- chain(P, _, _), S = #count { P, I, J : chain(P, I, J) }.
 % Calculate size for each cycle.
 cycle_with_size(P, S) :- cycle(P, _, _), S = #count { P, I, J : cycle(P, I, J) }.
